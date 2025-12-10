@@ -1,0 +1,98 @@
+@import "themes/catppuccin/mocha.css";
+@define-color accent @lavender;
+@define-color accent_alpha alpha(@lavender, 0.5);
+@define-color foreground_active @text;
+@define-color foreground_inactive @surface2;
+@define-color background @base;
+@define-color background_alpha alpha(@base, 0.5);
+
+
+* {
+    border: none;
+    min-height: 0px;
+    font-family: "FiraCode Nerd Font Propo", "Font Awesome 7 Free", "FiraCode Nerd Font";
+    font-size: 12px;
+    font-feature-settings: "cv11,cv14"
+}
+
+window#waybar {
+    background: transparent;
+    color: @foreground_active;
+}
+
+#custom-arch {
+    color: @sky;
+}
+
+#custom-separator {
+    color: @accent;
+}
+
+.modules-left {
+    border: 1px solid @accent;
+    border-radius: 5px;
+    padding: 0px 9px;
+    background-color: @background_alpha;
+}
+
+.modules-center {
+    border: 1px solid @accent;
+    border-radius: 5px;
+    padding: 0px 9px;
+    background-color: @background_alpha;
+}
+
+.modules-right {
+    border: 1px solid @accent;
+    border-radius: 5px;
+    padding: 0px 8px;
+    background-color: @background_alpha;
+}
+
+#backlight-slider {
+    padding: 0;
+}
+
+#backlight-slider slider {
+    min-height: 0px;
+    min-width: 0px;
+    border: none;
+    background: none;
+    box-shadow: none;
+}
+
+#backlight-slider trough {
+    min-height: 2px;
+    min-width: 69px;
+    border: none;
+    background: @foreground_inactive;
+}
+
+#backlight-slider highlight {
+    min-width: 3px;
+    border-radius: 10px;
+    background: @foreground_active;
+}
+
+#network {
+}
+
+#battery.warning {
+    color: @peach;
+}
+
+#battery.critical {
+    color: @red;
+}
+
+#battery.charging {
+    color: @green;
+}
+
+#workspaces button {
+    color: @foreground_inactive;
+}
+
+#workspaces button.active {
+    color: @accent;
+}
