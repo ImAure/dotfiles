@@ -1,0 +1,14 @@
+colori che servono:
+
+foreground: normal text
+foreground_accent: highlighted text
+foreground_inactive: grayed out text
+
+background: normal background
+background_accent: highlighted background
+
+arch_logo: color for the arch logo, light blue
+
+priority_high: red
+priority_medium: orange
+priority_good: green 
