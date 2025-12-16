@@ -1,136 +1,211 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdint.h>
+#include <string.h>
+#include <errno.h>
+
+#include "rgba.h"
+#include "token.h"
+#include "lexer.h"
 #include "parser.h"
 
-typedef enum _toktype {
-        TOK_STRING,         /* abc */
-        TOK_COLON,          /* : */
-        TOK_COMMA,          /* , */
-        TOK_LBRACE,         /* { */
-        TOK_RBRACE,         /* } */
-        TOK_LBRACKET,       /* [ */
-        TOK_RBRACKET,       /* ] */
-        TOK_HASH,           /* # */
-        TOK_HEX,            /* RRGGBBAA */
-        TOK_EOF,
-        TOK_ERR
-} toktype_t;
+enum _parserstatus {
+        PS_ERR,
+        PS_OK
+};
 
-typedef struct _token {
-        toktype_t type;
-        char      txt[NAME_MAX_LEN];
-} token_t;
+typedef struct _parser {
+        size_t       refcount;
+        lexer_t     *lx;
+        token_t     *tok;
+        rgbacolor_t  color;
+        rgbalist_t  *rgblist;
+        aliaslist_t *aliaslist;
+        uint8_t      status;
+} parser_t;
 
-typedef struct _lexer {
-        char *src;
-        char *p;
-} lexer_t;
-
-lexer_t lxCreate(char *json) {
-        lexer_t l;
-        l.src = json;
-        l.p   = json;
-        return l;
+extern parser_t *psCreate(lexer_t *lx) {
+        if (lx == NULL) return NULL;
+        parser_t *ps = malloc(sizeof (parser_t));
+        if (ps == NULL) return NULL;
+        ps->lx = lx;
+        ps->tok = NULL;
+        ps->status = PS_OK;
+        return ps;
 }
 
-int lxDestroy(lexer_t *l) {
-        l->src = NULL;
-        l->p   = NULL;
+extern void psRefrain(parser_t *ps) {
+        if (ps == NULL) return;
+        ps->refcount++;
+        return;
+}
+
+extern void psRelease(parser_t *ps) {
+        if (ps == NULL) return;
+        if (--ps->refcount == 0) free(ps);
+        return;
+}
+
+static lexer_t *psGetLexer(parser_t *ps) {
+        if (ps == NULL) return NULL;
+        return ps->lx;
+}
+
+static token_t *psGetToken(parser_t *ps) {
+        if (ps == NULL) return NULL;
+        return ps->tok;
+}
+
+static uint8_t psGetStatus(parser_t *ps) {
+        if (ps == NULL) return PS_ERR;
+        return ps->status;
+}
+
+static void psSetLexer(parser_t *ps, lexer_t *lx) {
+        if (ps == NULL) return;
+        ps->lx = lx;
+        return;
+}
+
+static void psSetToken(parser_t *ps, token_t *tok) {
+        if (ps == NULL) return;
+        ps->tok = tok;
+        return;
+}
+
+static void psSetStatus(parser_t *ps, uint8_t status) {
+        if (ps == NULL) return;
+        ps->status = status;
+        return;
+}
+
+static void psConsume(parser_t *ps, uint8_t type) {
+        if (ps == NULL) return;
+        if (psGetStatus(ps) == PS_ERR) return;
+        if (tokGetType(psGetToken(ps)) == type) lxNextToken(psGetLexer(ps), psGetToken(ps));
 }
 
 
-static inline char lxPeek(lexer_t *l) {
-        return *l->p;
+static void psExpect(parser_t *ps, uint8_t type) {
+        if (ps == NULL) return;
+        if (psGetStatus(ps) == PS_ERR) return;
+        if (tokGetType(psGetToken(ps)) == type) {
+                lxNextToken(psGetLexer(ps), psGetToken(ps));
+                return;
+        }
+        psSetStatus(ps, PS_ERR);
+        return;
 }
 
-static inline char lxNext(lexer_t *l) {
-        return *l->p++;
+static void psParseKey(parser_t *ps, char *key) {
+        if ((ps == NULL) || (key == NULL)) return;
+        strncpy(tokGetText(psGetToken(ps)), key, NAME_MAX_LEN);
+        key[NAME_MAX_LEN] = 0;
+        return;
 }
 
-static void lxSkipSpaces(lexer_t *l) {
-        while (isspace(lxPeek(l))) lxNext(l);
+
+static void psParseColorObject(parser_t *ps) {
+        /*
+         * {
+         *    "key": "val",
+         *    "key": #val,
+         *    ...
+         * }
+         */
+        if (ps == NULL) return;
+        char key[NAME_MAX_LEN + 1];
+        rgbacolor_t color;
+        color.isvalid = 0;
+        psExpect(ps, TOK_LBRACE);
+        if (tokGetStatus(psGetToken(ps)) != TOK_STRING) {
+                psSetStatus(ps, PS_ERR);
+                return;
+        }
+        psParseKey(ps, key);
+        psExpect(ps, TOK_COLON);
+        if (strncmp(key, STR_KEY_NAME, NAME_MAX_LEN) == 0) psParseName()
+
+
+        /* ancora da fare */
+}
+static void psParsePalette(parser_t *ps) {
+        if (ps == NULL) return;
+        psExpect(ps, TOK_COLON);
+        psExpect(ps, TOK_LBRACKET);
+        if (psGetStatus(ps) == PS_ERR) return;
+        while ((tokGetType(psGetToken(ps)) != TOK_RBRACKET) && (psGetStatus(ps) != PS_ERR)) {
+                psParseColorObject(ps);
+                psConsume(ps, TOK_COMMA);
+        }
 }
 
-static token_t lxString(lexer_t *l) {
-        token_t tok;
-        tok.type = TOK_STRING;
-        lxNext(l);
-        size_t i = 0;
-        while ((lxPeek(l) != 0) && (lxPeek(l) != SYMBOL_QUOTES) && (i < NAME_MAX_LEN)) {
-                if (isalnum(lxPeek(l)) || lxPeek(l) == '-' || lxPeek(l) == '_') {
-                        tok.txt[i++] = lxNext(l);
-                } else {
-                        lxNext(l);
+
+
+
+
+
+
+
+
+
+
+// static void psParsePalette(parser_t *ps) {
+//         if (ps == NULL) return;
+//         lxNextToken(psGetLexer(ps), psGetToken(ps));
+//         if (tokGetType(psGetToken(ps)) == TOK_LBRACKET) lxNextToken(psGetLexer(ps), psGetToken(ps));
+//         while ((tokGetType(psGetToken(ps)) != TOK_RBRACKET) && (psGetStatus(ps) != PS_ERR)) {
+//                 switch (tokGetType(psGetToken(ps))) {
+//                 case TOK_LBRACE:
+//                         psParseObjsect(ps);
+//                 case TOK_COMMA:
+//                         lxNextToken(psGetLexer(ps), psGetToken(ps));
+//                         break;
+//                 default:
+//                         psSetStatus(ps, PS_ERR);
+//                 }
+//         }
+// }
+
+static void psParseAliases(parser_t *ps) {
+        /* simile */
+}
+
+static void psParseNext(parser_t *ps) {
+        if (ps == NULL) return;
+        lxNextToken(psGetLexer(ps), psGetToken(ps));
+        uint8_t type = tokGetType(psGetToken(ps));
+        char buffer[NAME_MAX_LEN + 1];
+        strncpy(buffer, tokGetText(psGetToken(ps)), NAME_MAX_LEN);
+        buffer[NAME_MAX_LEN] = 0;
+
+        if (type == TOK_STRING) {
+                if (strncmp(buffer, STR_PALETTE, NAME_MAX_LEN) == 0) {
+                        psParsePalette(ps);
+                } else if (strncmp(buffer, STR_ALIASES, NAME_MAX_LEN) == 0) {
+                        psParseAliases(ps);
                 }
         }
-        tok.txt[i] = 0;
-        if (lxPeek(l) == SYMBOL_QUOTES) lxNext(l);
-        return tok;
 }
 
-static token_t lxHex(lexer_t *l) {
-        token_t tok;
-        size_t i = 0;
-        tok.type = TOK_HEX;
-        while(isxdigit(lxPeek(l)) && (i < RGBA_LEN)) {
-                tok.txt[i++] = lxNext(l);
+extern void psParse(char *json, rgbalist_t *colors, aliaslist_t *aliases) {
+        lexer_t *lx = lxCreate(json);
+        parser_t *ps = psCreate(lx);
+        
+        while ((tokGetType(psGetToken(ps)) != TOK_EOF) && (psGetStatus(ps) != PS_ERR)) {
+                psParseNext(ps);
         }
-        tok.txt[i] = 0;
-        if (i != RGBA_LEN) tok.type = TOK_ERR;
-        return tok;
+
+
+
+
+
+
+        lxRelease(lx);
+        psRelease(ps);
 }
 
-token_t lxNextToken(lexer_t *l) {
-        lxSkipSpaces(l);
-        char c = lxPeek(l);
-        token_t tok;
-        if (c == 0) {
-                tok.type = TOK_EOF;
-                strcpy(tok.txt, SYMBOL_EOF);
-                return tok;
-        }
-        switch (c) {
-                case SYMBOL_COLON:
-                        tok.type = TOK_COLON;
-                        *tok.txt = c;
-                        lxNext(l);
-                        return tok;
-                case SYMBOL_HASH:
-                        tok.type = TOK_HASH;
-                        *tok.txt = c;
-                        lxNext(l);
-                        return tok;
-                case SYMBOL_COMMA:
-                        tok.type = TOK_COMMA;
-                        *tok.txt = c;
-                        lxNext(l);
-                        return tok;
-                case SYMBOL_LBRACE:
-                        tok.type = TOK_LBRACE;
-                        *tok.txt = c;
-                        lxNext(l);
-                        return tok;
-                case SYMBOL_RBRACE:
-                        tok.type = TOK_RBRACE;
-                        *tok.txt = c;
-                        lxNext(l);
-                        return tok;
-                case SYMBOL_LBRACKET:
-                        tok.type = TOK_LBRACKET;
-                        *tok.txt = c;
-                        lxNext(l);
-                        return tok;
-                case SYMBOL_RBRACKET:
-                        tok.type = TOK_RBRACKET;
-                        *tok.txt = c;
-                        lxNext(l);
-                        return tok;
-                case SYMBOL_QUOTES:
-                        return lxString(l);
 
-                default:
-                        if (isxdigit(lxPeek(l))) return lxHex(l);
-                        lxNext(l);
-                        tok.type = TOK_ERR;
-                        *tok.txt = SYMBOL_ERR;
-                        return tok;
-        }
-}
+
+

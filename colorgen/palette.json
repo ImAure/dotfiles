@@ -1,58 +1,68 @@
-"palette": [
-    {
-        "name": "rosewater",
-        "value": #f5e0dc,
-    }, {
-        "name": "flamingo",
-        "value": #f2cdcd,
-    }, {
-        "name": "pink",
-        "value": #f5c2e7,
-    }, {
-        "name": "mauve",
-        "value": #cba6f7,
-    }, {
-        "name": "red",
-        "value": #f38ba8,
-    }, {
-        "name": "maroon",
-        "value": #eba0ac,
-    }, {
-        "name": "peach",
-        "value": #fab387,
-    }, {
-        "name": "yellow",
-        "value": #f9e2af,
-    }, {
-        "name": "green",
-        "value": #a6e3a1,
-    }, {
-        "name": "teal",
-        "value": #94e2d5,
-    }, {
-        "name": "sky",
-        "value": #89dceb,
-    }, {
-        "name": "sapphire",
-        "value": #89b4fa
-    }, {
-        "name": "blue",
-        "value": #89b4fa,
-    }, {
-        "name": "lavender",
-        "value": b4befe,
-    }, {
-        "name": "text",
-        "value": #cdd6f4,
-    }, {
-        "name": "subtext1",
-        "value": #bac2de,
-    }, {
-        "name": "subtext0",
-        "value": #a6adc8,
-    }
-],
-
-"aliases": {
-    "accent": "rosewater",
-},
+{
+        "palette": [
+                {
+                        "name": "rosewater",
+                        "value": "#f5e0dc",
+                }, {
+                        "name": "flamingo",
+                        "value": "#f2cdcd",
+                }, {
+                        "name": "pink",
+                        "value": "#f5c2e7",
+                }, {
+                        "name": "mauve",
+                        "value": "#cba6f7",
+                }, {
+                        "name": "red",
+                        "value": "#f38ba8",
+                }, {
+                        "name": "maroon",
+                        "value": "#eba0ac",
+                }, {
+                        "name": "peach",
+                        "value": "#fab387",
+                }, {
+                        "name": "yellow",
+                        "value": "#f9e2af",
+                }, {
+                        "name": "green",
+                        "value": "#a6e3a1",
+                }, {
+                        "name": "teal",
+                        "value": "#94e2d5",
+                }, {
+                        "name": "sky",
+                        "value": "#89dceb",
+                }, {
+                        "name": "sapphire",
+                        "value": "#89b4fa"
+                }, {
+                        "name": "blue",
+                        "value": "#89b4fa",
+                }, {
+                        "name": "lavender",
+                        "value": "",
+                }, {
+                        "name": "text",
+                        "value": "#cdd6f4",
+                }, {
+                        "name": "subtext1",
+                        "value": "#bac2de",
+                }, {
+                        "name": "subtext0",
+                        "value": "#a6adc8",
+                },
+        ],
+        "aliases": [
+                {
+                        "name": "accent",
+                        "color": "rosewater",
+                },
+                {
+                        "name": "accentAlpha",
+                        "color": "rosewater",
+                        "isalpha": true,
+                        "alpha": 22,
+                },
+        ]
+}

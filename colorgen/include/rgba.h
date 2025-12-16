@@ -26,7 +26,7 @@ extern void        rgbalPush(rgbalist_t *list, rgbacolor_t *new);
 extern aliaslist_t *aliaslCreate(size_t len);
 extern void         aliaslRefrain(aliaslist_t *list);
 extern void         aliaslRelease(aliaslist_t *list);
-extern void         aliaslPush(aliaslist_t *list, alias
+extern void         aliaslPush(aliaslist_t *list, aliascolor_t *new);
 
 #endif /* RGBA_H */
 

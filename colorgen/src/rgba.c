@@ -5,8 +5,10 @@ typedef struct _rgbacolor {
         /* +-+------//-+-+-+-+-+
          * |F| NAME    |R|G|B|A|
          * +-+------//-+-+-+-+-+ */
-        uint8_t isvalid:4;
-        uint8_t isalpha:4;
+        uint8_t isvname:1;
+        uint8_t isvcolor:1;
+        uint8_t isvalpha:1;
+        uint8_t isalpha:5;
         char    name[NAME_MAX_LEN];
         uint8_t r;
         uint8_t g;
@@ -22,6 +24,7 @@ typedef struct _aliascolor {
         uint8_t isalpha:4;
         char    name[NAME_MAX_LEN];
         char    alias[NAME_MAX_LEN];
+        uint8_t a;
 } aliascolor_t;
 
 typedef struct _rgbalist {
