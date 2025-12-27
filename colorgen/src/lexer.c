@@ -99,55 +99,55 @@ extern void lxNextToken(lexer_t *lx, token_t *tok) {
         char c;
         lxSkipSpaces(lx);
         c = lxPeek(lx);
-        if (c == 0) {
+
+        switch (c) {
+        case 0:
+                printf("lxNextToken: EOF\n");
                 tokSetType(tok, TOK_EOF);
                 tokSetText(tok, SYMBOL_EOF);
                 return;
-        }
-        switch (c) {
         case SYMBOL_COLON:
+                printf("lxNextToken: COLON\n");
                 tokSetType(tok, TOK_COLON);
                 tokSetText(tok, STR_COLON);
                 lxNext(lx);
                 return;
-        // case SYMBOL_HASH:
-        //         tokSetType(tok, TOK_HASH);
-        //         tokSetText(tok, STR_HASH);
-        //         lxNext(lx);
-        //         return;
         case SYMBOL_COMMA:
+                printf("lxNextToken: COMMA\n");
                 tokSetType(tok, TOK_COMMA);
                 tokSetText(tok, STR_COMMA);
                 lxNext(lx);
                 return;
         case SYMBOL_LBRACE:
+                printf("lxNextToken: LBRACE\n");
                 tokSetType(tok, TOK_LBRACE);
                 tokSetText(tok, STR_LBRACE);
                 lxNext(lx);
                 return;
         case SYMBOL_RBRACE:
+                printf("lxNextToken: RBRACE\n");
                 tokSetType(tok, TOK_RBRACE);
                 tokSetText(tok, STR_RBRACE);
                 lxNext(lx);
                 return;
         case SYMBOL_LBRACKET:
+                printf("lxNextToken: LBRACKET\n");
                 tokSetType(tok, TOK_LBRACKET);
                 tokSetText(tok, STR_LBRACKET);
                 lxNext(lx);
                 return;
         case SYMBOL_RBRACKET:
+                printf("lxNextToken: RBRACKET\n");
                 tokSetType(tok, TOK_RBRACKET);
                 tokSetText(tok, STR_RBRACKET);
                 lxNext(lx);
                 return;
         case SYMBOL_QUOTES:
+                printf("lxNextToken: STRING\n");
                 lxString(lx, tok);
                 return;
         default:
-                // if (isxdigit(lxPeek(lx))) {
-                //         lxHex(lx, tok);
-                //         return;
-                // }
+                printf("lxNextToken: ERR\n");
                 tokSetType(tok, TOK_ERR);
                 tokSetText(tok, STR_ERR);
                 lxNext(lx);

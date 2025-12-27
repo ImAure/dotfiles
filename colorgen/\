@@ -96,26 +96,21 @@ static inline void psNextToken(parser_t *ps) {
 static int psIsTokenType(parser_t *ps, uint8_t type) {
         if (!psIsValid(ps)) return 0;
         if (tokGetType(psGetToken(ps)) != type) {
+                psSetStatus(ps, PS_ERR);
                 return 0;
         }
         return 1;
 }
 
-static int psConsume(parser_t *ps, uint8_t type) {
-        if (!psIsValid(ps)) return 0;
-        if (psIsTokenType(ps, type)) {
-                psNextToken(ps);
-                return 1;
-        }
-        printf("psConsume: consumed\n");
-        return 0;
+static void psConsume(parser_t *ps, uint8_t type) {
+        if (!psIsValid(ps)) return;
+        if (psIsTokenType(ps, type)) psNextToken(ps);
+        // printf("psConsume: consumed\n");
+        return;
 }
 
 static void psExpect(parser_t *ps, uint8_t type) {
-        if (!psIsTokenType(ps, type)) {
-                psSetStatus(ps, PS_ERR);
-                return;
-        }
+        if (!psIsTokenType(ps, type)) return;
         // printf("expect succeeded\n");
         psNextToken(ps);
         return;
@@ -136,6 +131,7 @@ static void psParseKeyValue(parser_t *ps, char *key, char *value) {
         psExpect(ps, TOK_COLON);
         if (!psIsTokenType(ps, TOK_STRING)) return;
         psParseString(ps, value);
+        psExpect(ps, TOK_COMMA);
         return;
 }
 
@@ -143,18 +139,16 @@ static void psParseColorObject(parser_t *ps) {
         /*
          * {
          *    "key": "val",
-         *    "key": "val",
+         *    "key": #val,
          *    ...
-         * }.
+         * }
          */
-        printf("nuovo colore\n");
         if (ps == NULL) return;
         rgbacolor_t color;
         psExpect(ps, TOK_LBRACE);
         char key[NAME_MAX_LEN + 1];
         char value[NAME_MAX_LEN + 1];
-        while (psIsValid(ps)) {
-                psConsume(ps, TOK_COMMA);
+        while ((tokGetType(psGetToken(ps)) != TOK_RBRACE) && psIsValid(ps)) {
                 psParseKeyValue(ps, key, value);
                 printf("key: %s, value: %s\n", key, value);
                 /*fare una lunga serie di if/else con tutti i possibili key e settare i value*/
@@ -163,11 +157,9 @@ static void psParseColorObject(parser_t *ps) {
                         color.name[NAME_MAX_LEN] = 0;
                         printf("guarda ho appena scritto %s\n", color.name);
                 } else if (!strncmp(key, STR_KEY_VALUE, NAME_MAX_LEN)) {
+                        
                         printf("*c'è altro da implementare qui\n");
                 }
-                if (psConsume(ps, TOK_RBRACE)) break;
-                psExpect(ps, TOK_COMMA);
-                while (psConsume(ps, TOK_COMMA));
         }
 
         /* SEI ARRIVATO QUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
@@ -213,7 +205,7 @@ static void psParseNext(parser_t *ps) {
         lxNextToken(psGetLexer(ps), psGetToken(ps));
         uint8_t type = tokGetType(psGetToken(ps));
         char buffer[NAME_MAX_LEN + 1];
-        // printf("psparsenext: prossimo...\n");
+        printf("psparsenext: prossimo...\n");
         strncpy(buffer, tokGetText(psGetToken(ps)), NAME_MAX_LEN);
         buffer[NAME_MAX_LEN] = 0;
 

@@ -1,4 +1,5 @@
 #include "rgba.h"
+#include "token.h"
 #include "lexer.h"
 #include "parser.h"
 
@@ -9,20 +10,45 @@ typedef struct _token {
         uint16_t refcount;
 } token_t;
 
-int main(void) {
+int main(int argc, char **argv) {
         printf("ciao!\n");
-        lexer_t *l = lxCreate(NULL);
-        printf("ciao, l'adi mensione: %zu\n", sizeof (token_t));
 
-        printf("ilcoloreeeeee %x\n", 255);
-        char prova[400];
-        int ciao;
-        scanf("%x", &ciao);
-        printf("%d, %x", ciao, ciao);
-        unsigned int blue = ciao & 255;
-        unsigned int green = (ciao & (65536 - 255)) >> 8;
-        unsigned int red = (ciao & (16777216 - 65536)) >> 16;
-        printf("red: %u\ngreen: %u\nblue: %u\n", red, green, blue);
+        if (argc != 2) {
+                fprintf(stderr, "Wrong number of arguments.\nUsage: %s path/to/file", argv[0]);
+                return 1;
+        }
+
+        FILE *fp;
+        size_t file_size;
+        char *text;
+
+        fp = fopen(argv[1], "r");
+        if (fp == NULL) {
+                perror("Could not read file");
+                return 1;
+        }
+
+        /* get file size */
+        fseek(fp, 0, SEEK_END);
+        file_size = ftell(fp);
+        fseek(fp, 0, SEEK_SET);
+
+        /* allocate memory for text and load file */
+        text = malloc(file_size + 1);
+        if (text == NULL) {
+                perror("Could not load file");
+                fclose(fp);
+                return 1;
+        }
+        fread(text, file_size, 1, fp);
+        text[file_size] = 0;
+        fclose(fp);
+        printf("qua ci siamo\n");
+
+        psParse(text);
+
+
+
 
 
 

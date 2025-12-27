@@ -2,13 +2,13 @@
         "palette": [
                 {
                         "name": "rosewater",
-                        "value": "#f5e0dc",
+                        "value": "#f5e0dc",,
                 }, {
                         "name": "flamingo",
-                        "value": "#f2cdcd",
+                        "value": "#f2cdcd"
                 }, {
-                        "name": "pink",
                         "value": "#f5c2e7",
+                        "name": "pink"
                 }, {
                         "name": "mauve",
                         "value": "#cba6f7",
@@ -35,7 +35,7 @@
                         "value": "#89dceb",
                 }, {
                         "name": "sapphire",
-                        "value": "#89b4fa"
+                        "value": "#89b4fa",
                 }, {
                         "name": "blue",
                         "value": "#89b4fa",

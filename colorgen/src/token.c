@@ -56,6 +56,9 @@ extern uint8_t tokGetType(token_t *t) {
 }
 
 extern const char *tokGetText(token_t *t) {
-        if (t == NULL) return NULL;
+        if (t == NULL) {
+                return NULL;
+        }
+        printf("toktxt: '%s'\n", t->text);
         return t->text;
 }

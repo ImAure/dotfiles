@@ -20,10 +20,10 @@
 
 typedef struct _parser parser_t;
 
-extern parser_t *psCreate(lexer_t *lx);
+extern parser_t *psCreate(lexer_t *lx, token_t *tok);
 extern void      psRefrain(parser_t *ps);
 extern void      psRelease(parser_t *ps);
 
-extern void      psParse(char *json, rgbalist_t *colors, aliaslist_t *aliases);
+extern void      psParse(char *json);
 
 #endif /* PARSER_H */
