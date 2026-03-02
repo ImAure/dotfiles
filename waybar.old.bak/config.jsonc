@@ -1,0 +1,129 @@
+// -*- mode: json -*-
+
+{
+    "layer": "top",
+    "position": "top",
+    "margin-top": 5,
+    "margin-right": 5,
+    "margin-left": 5,
+    "spacing": 5,
+    "exclusive": true,
+    "fixed-center": true,
+    
+    "reload_style_on_change": true,
+
+    "modules-left": [
+        "custom/arch",
+        "custom/separator",
+        "hyprland/workspaces",
+        "custom/separator",
+        "hyprland/window",
+        "custom/separator",
+    ],
+
+    "modules-center": [
+        "clock"
+    ],
+    
+    "modules-right": [
+        // "memory",
+        "custom/separator",
+        "backlight",
+        // "custom/separator",
+        "backlight/slider",
+        "custom/separator",
+        "pulseaudio",
+        "custom/separator",
+        "network",
+        "custom/separator",
+        "battery"
+    ],
+
+    "custom/arch": {
+        // "format": ""
+        "format": "<b>󰣇</b>"
+        // "format": ""
+    },
+
+    "hyprland/workspaces": {
+        "active-only": false,
+        "hide-active": false,
+        "format": "<b>{id}</b>",
+    },
+
+    "hyprland/window": {
+        "format": "<b> {initialTitle}</b>",
+        "max-length": 25,
+    },
+
+
+
+    "clock": {
+        "interval": 1,
+        "format": "<b>{:%H:%M}</b>",
+        "format-alt": "<b>{:%A %d %b <span foreground='#ff0000'>|</span> %H:%M:%S}</b>",
+        "tooltip": false,  /* to be configured and set to true */
+    },
+
+
+
+    "backlight": {
+        "format": "<b>{icon} {percent}% </b>",
+        "format-icons": ["", ""]
+        /* "format-icons": [" ", "󰪞 ", "󰪟 ", "󰪠 ", "󰪡 ", "󰪢 ", "󰪣 ", "󰪤 ", " "] */
+    },
+
+    "backlight/slider": {
+        "min": 0,
+        "max": 100,
+    },
+
+    "pulseaudio": {
+        "format": "<b> {volume}%</b>",
+        "format-muted": "",
+    },
+
+    "network": {
+        "interval": 5,
+        "format-wifi": "<b>{icon}</b>",
+        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]
+    },
+
+    "battery": {
+        "interval": 10,
+        "format": "<b>{icon} {capacity}%</b>",
+        "format-alt": "<b><i>scemo chi legge</i></b>",
+        // "format-icons": ["", "", "", "", ""],
+        "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+
+        "format-charging": "<b>{icon} {capacity}% </b>",
+        "format-icons-charging": ["o"], 
+        "states": {
+            "warning": 25,
+            "critical": 10
+        },
+        "tooltip": false, /* to be configured and set to true */
+        "tooltip-format": "<b>{timeTo}</b>",
+        "format-time": "<b>{H}h {M}m</b>",
+    },
+
+    "custom/cava": {
+        "exec": "cava -p ~/.config/cava/config | sed 's/;//g'",
+        "return-type": "raw",
+        "format": "{}",
+        "escape": false,
+        "framerate": 30,
+        "autosense": 1,
+        "bars": 12,
+        "lower_cutoff_freq": 40,
+        "higher_cutoff_freq": 10000,
+    },
+
+
+
+    "custom/separator": {
+        "format": "<b>|</b>",
+        "interval": "once",
+        "tooltip": false
+    },
+}

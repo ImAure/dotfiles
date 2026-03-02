@@ -1,0 +1,237 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <stdint.h>
+#include <string.h>
+#include <errno.h>
+
+#include "rgba.h"
+#include "token.h"
+#include "lexer.h"
+#include "parser.h"
+
+enum _parserstatus {
+        PS_ERR,
+        PS_OK
+};
+
+typedef struct _parser {
+        size_t       refcount;
+        lexer_t     *lx;
+        token_t     *tok;
+        rgbacolor_t  color;
+        rgbalist_t  *rgblist;
+        aliaslist_t *aliaslist;
+        uint8_t      status;
+} parser_t;
+
+extern parser_t *psCreate(lexer_t *lx, token_t *tok) {
+        if ((lx == NULL) || (tok == NULL)) return NULL;
+        parser_t *ps = malloc(sizeof (parser_t));
+        if (ps == NULL) return NULL;
+        ps->lx = lx;
+        ps->tok = tok;
+        ps->status = PS_OK;
+        return ps;
+}
+
+extern void psRefrain(parser_t *ps) {
+        if (ps == NULL) return;
+        ps->refcount++;
+        return;
+}
+
+extern void psRelease(parser_t *ps) {
+        if (ps == NULL) return;
+        if (--ps->refcount == 0) free(ps);
+        return;
+}
+
+static lexer_t *psGetLexer(parser_t *ps) {
+        if (ps == NULL) return NULL;
+        return ps->lx;
+}
+
+static token_t *psGetToken(parser_t *ps) {
+        if (ps == NULL) return NULL;
+        // printf("allora, il token c'è\n");
+        return ps->tok;
+}
+
+static uint8_t psGetStatus(parser_t *ps) {
+        if (ps == NULL) return PS_ERR;
+        return ps->status;
+}
+
+static void psSetLexer(parser_t *ps, lexer_t *lx) {
+        if (ps == NULL) return;
+        ps->lx = lx;
+        return;
+}
+
+static void psSetToken(parser_t *ps, token_t *tok) {
+        if (ps == NULL) return;
+        ps->tok = tok;
+        return;
+}
+
+static void psSetStatus(parser_t *ps, uint8_t status) {
+        if (ps == NULL) return;
+        ps->status = status;
+        return;
+}
+
+
+
+
+static inline int psIsValid(parser_t *ps) {
+        if (psGetStatus(ps) == PS_ERR) return 0;
+        else return 1;
+}
+
+static inline void psNextToken(parser_t *ps) {
+        if (psIsValid(ps)) lxNextToken(psGetLexer(ps), psGetToken(ps));
+}
+
+static int psIsTokenType(parser_t *ps, uint8_t type) {
+        if (!psIsValid(ps)) return 0;
+        if (tokGetType(psGetToken(ps)) != type) {
+                psSetStatus(ps, PS_ERR);
+                return 0;
+        }
+        return 1;
+}
+
+static void psConsume(parser_t *ps, uint8_t type) {
+        if (!psIsValid(ps)) return;
+        if (psIsTokenType(ps, type)) psNextToken(ps);
+        // printf("psConsume: consumed\n");
+        return;
+}
+
+static void psExpect(parser_t *ps, uint8_t type) {
+        if (!psIsTokenType(ps, type)) return;
+        // printf("expect succeeded\n");
+        psNextToken(ps);
+        return;
+}
+
+static void psParseString(parser_t *ps, char *str) {
+        if (!psIsValid(ps) || str == NULL) return;
+        strncpy(str, tokGetText(psGetToken(ps)), NAME_MAX_LEN);
+        str[NAME_MAX_LEN] = 0;
+        psNextToken(ps);
+        return;
+}
+
+static void psParseKeyValue(parser_t *ps, char *key, char *value) {
+        if ((!psIsValid(ps)) || (key == NULL) || (value == NULL)) return;
+        if (!psIsTokenType(ps, TOK_STRING)) return;
+        psParseString(ps, key);
+        psExpect(ps, TOK_COLON);
+        if (!psIsTokenType(ps, TOK_STRING)) return;
+        psParseString(ps, value);
+        psExpect(ps, TOK_COMMA);
+        return;
+}
+
+static void psParseColorObject(parser_t *ps) {
+        /*
+         * {
+         *    "key": "val",
+         *    "key": #val,
+         *    ...
+         * }
+         */
+        if (ps == NULL) return;
+        rgbacolor_t color;
+        psExpect(ps, TOK_LBRACE);
+        char key[NAME_MAX_LEN + 1];
+        char value[NAME_MAX_LEN + 1];
+        while ((tokGetType(psGetToken(ps)) != TOK_RBRACE) && psIsValid(ps)) {
+                psParseKeyValue(ps, key, value);
+                printf("key: %s, value: %s\n", key, value);
+                /*fare una lunga serie di if/else con tutti i possibili key e settare i value*/
+                if (!strncmp(key, STR_KEY_NAME, NAME_MAX_LEN)) {
+                        strncpy(color.name, value, NAME_MAX_LEN);
+                        color.name[NAME_MAX_LEN] = 0;
+                        printf("guarda ho appena scritto %s\n", color.name);
+                } else if (!strncmp(key, STR_KEY_VALUE, NAME_MAX_LEN)) {
+                        
+                        printf("*c'è altro da implementare qui\n");
+                }
+        }
+
+        /* SEI ARRIVATO QUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+}
+static void psParsePalette(parser_t *ps) {
+        if (ps == NULL) return;
+        printf("psParsePalette: è l'ora della palette!\n");
+        psNextToken(ps);
+        psExpect(ps, TOK_COLON);
+        psExpect(ps, TOK_LBRACKET);
+        if (psGetStatus(ps) == PS_ERR) { printf("psParseColorPalette: couldn't start\n"); return; }
+        while ((tokGetType(psGetToken(ps)) != TOK_RBRACKET) && (psGetStatus(ps) != PS_ERR)) {
+                psParseColorObject(ps);
+                psConsume(ps, TOK_COMMA);
+        }
+}
+
+
+// static void psParsePalette(parser_t *ps) {
+//         if (ps == NULL) return;
+//         lxNextToken(psGetLexer(ps), psGetToken(ps));
+//         if (tokGetType(psGetToken(ps)) == TOK_LBRACKET) lxNextToken(psGetLexer(ps), psGetToken(ps));
+//         while ((tokGetType(psGetToken(ps)) != TOK_RBRACKET) && (psGetStatus(ps) != PS_ERR)) {
+//                 switch (tokGetType(psGetToken(ps))) {
+//                 case TOK_LBRACE:
+//                         psParseObjsect(ps);
+//                 case TOK_COMMA:
+//                         lxNextToken(psGetLexer(ps), psGetToken(ps));
+//                         break;
+//                 default:
+//                         psSetStatus(ps, PS_ERR);
+//                 }
+//         }
+// }
+
+static void psParseAliases(parser_t *ps) {
+        /* simile */
+}
+
+static void psParseNext(parser_t *ps) {
+        if (ps == NULL) return;
+        lxNextToken(psGetLexer(ps), psGetToken(ps));
+        uint8_t type = tokGetType(psGetToken(ps));
+        char buffer[NAME_MAX_LEN + 1];
+        printf("psparsenext: prossimo...\n");
+        strncpy(buffer, tokGetText(psGetToken(ps)), NAME_MAX_LEN);
+        buffer[NAME_MAX_LEN] = 0;
+
+        if (type == TOK_STRING) {
+                if (strncmp(buffer, STR_PALETTE, NAME_MAX_LEN) == 0) {
+                        psParsePalette(ps);
+                } else if (strncmp(buffer, STR_ALIASES, NAME_MAX_LEN) == 0) {
+                        psParseAliases(ps);
+                }
+        }
+}
+
+extern void psParse(char *json) {
+        lexer_t *lx = lxCreate(json);
+        token_t *tok = tokCreate();
+        parser_t *ps = psCreate(lx, tok);
+        printf("Creato lx tok e ps\n");
+        while ((tokGetType(psGetToken(ps)) != TOK_EOF) && (psGetStatus(ps) != PS_ERR)) {
+                // printf("parso...\n");
+                psParseNext(ps);
+        }
+
+        lxRelease(lx);
+        psRelease(ps);
+}
+
+
+
+

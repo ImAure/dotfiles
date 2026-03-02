@@ -1,0 +1,16 @@
+#battery.warning {
+    color: @peach;
+}
+
+#battery.critical {
+    color: @red;
+}
+
+#battery.charging {
+    color: @green;
+}
+
+#battery.plugged {
+    color: @green;
+}
+

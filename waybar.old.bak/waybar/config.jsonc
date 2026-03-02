@@ -1,0 +1,269 @@
+// -*- mode: json -*-
+
+{
+    "layer": "top",
+    "position": "top",
+    "margin-top": 5,
+    "margin-right": 5,
+    "margin-left": 5,
+    "spacing": 5,
+    "exclusive": true,
+    "fixed-center": true,
+    
+    "reload_style_on_change": true,
+
+    "modules-left": [
+        "group/host",
+        "custom/separator",
+        "hyprland/workspaces",
+        "custom/separator",
+        "hyprland/window"
+        // "custom/separator",
+    ],
+
+    "modules-center": [
+        "clock"
+    ],
+    
+    "modules-right": [
+        "group/hardware",
+        "custom/separator",
+        "group/light",
+        "custom/separator",
+        "group/audio",
+        "custom/separator",
+        "group/connectivity",
+        "custom/separator",
+        "battery"
+    ],
+
+    //===============
+    //= ARCH
+    
+    "custom/arch": {
+        "format": "<b>󰣇</b>",
+        "format-alt": "<b><i>secret cat:</i> </b>"
+    },
+
+    "user": {
+
+    },
+
+    "group/host": {
+         "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 400,
+            "transition-left-to-right": true,
+            "click-to-reveal": false
+        },
+        "modules": [
+            "custom/arch",
+            "custom/group-separator",
+            "user"
+        ],
+
+    },
+
+    
+    //===================================|
+    //=  HARDWARE - disk + memory + cpu =|
+    //===================================|
+    "cpu": {
+        "interval": 5,
+        "format": "<b> {usage}%</b>",
+    },
+
+    "disk": {
+        "interval": 30,
+        "format": "<b> {percentage_used}% {path}</b>",
+    },
+
+    "memory": {
+        "interval": 5,
+        "format": "<b> {percentage}%</b>",
+    },
+
+    "group/hardware": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 400,
+            "transition-left-to-right": false,
+            "click-to-reveal": false 
+        },
+        "modules": [
+            "cpu",
+            "memory",
+            "custom/group-separator",
+            "disk",
+            "custom/group-separator"
+        ],
+    },
+
+    //=================================================|
+    //= IO - pulseaudio + slider / backlight + slider =|
+    //=================================================|
+    "backlight": {
+        "format": "<b>{icon} {percent}%</b>",
+        "format-icons": ["󰽥", "󰖨"]
+    },
+
+    "backlight/slider": {
+        "min": 0,
+        "max": 100,
+    },
+
+    "pulseaudio": {
+        "format": "<b> {volume}%</b>",
+        "format-muted": "<b> {volume}%</b>",
+    },
+
+    "pulseaudio/slider": {
+        "min": 0,
+        "max": 100
+    },
+
+    "group/audio": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 400,
+            "transition-left-to-right": false,
+            "click-to-reveal": false
+        },
+        "modules": [
+            "pulseaudio",
+            "pulseaudio/slider",
+            "custom/group-separator"
+        ],
+    },
+
+    "group/light": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 400,
+            "transition-left-to-right": false,
+            "click-to-reveal": false
+        },
+        "modules": [
+            "backlight",
+            "backlight/slider",
+            "custom/group-separator"
+        ],
+    },
+
+    //===================================|
+    //= CONNECTIVITY - wifi + bluetooth =|
+    //===================================|
+    "network": {
+        "interval": 1,
+        "format-wifi": "<b>{icon}</b>",
+        "format-alt": "<b>{ifname}: {essid}</b>",
+        "format-disconnected": "<b>󰤭</b>",
+        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"]
+    },
+
+    "bluetooth": {
+        
+    },
+
+    "group/connectivity": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 400,
+            "transition-left-to-right": false,
+            "click-to-reveal": false
+        },
+        "modules": [
+            "network",
+            "bluetooth",
+            "custom/group-separator"
+        ],
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    "hyprland/workspaces": {
+        "active-only": false,
+        "hide-active": false,
+        "format": "<b>{id}</b>",
+    },
+
+    "hyprland/window": {
+        "format": "<b> {initialTitle}</b>",
+        "max-length": 25,
+    },
+
+
+
+    "clock": {
+        "interval": 1,
+        "format": "<b>{:%H:%M}</b>",
+        "format-alt": "<b>{:%A %d %b <span foreground='#b4befe'>|</span> %H:%M:%S}</b>",
+        "tooltip": false,  /* to be configured and set to true */
+    },
+
+
+    
+
+    
+
+    "battery": {
+        "interval": 1,
+        "format": "<b>{icon} {capacity}%</b>",
+        "format-alt": "<b><i>scemo chi legge</i></b>",
+        "format-charging": "<b>{icon} {capacity}%</b>",
+        "format-plugged": "<b></b>",
+        // "format-icons": ["", "", "", "", ""],
+        "format-icons": {
+            "default": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+            "charging": ["󰂃", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋 "]
+        },
+
+
+        "states": {
+            "warning": 25,
+            "critical": 10
+        },
+        "tooltip": false, /* to be configured and set to true */
+        "tooltip-format": "<b>{timeTo}</b>",
+        "format-time": "<b>{H}h {M}m</b>",
+    },
+
+    "custom/cava": {
+        "exec": "cava -p ~/.config/cava/config | sed 's/;//g'",
+        "return-type": "raw",
+        "format": "{}",
+        "escape": false,
+        "framerate": 30,
+        "autosense": 1,
+        "bars": 12,
+        "lower_cutoff_freq": 40,
+        "higher_cutoff_freq": 10000,
+    },
+
+
+
+    "custom/separator": {
+        "format": "<b>|</b>",
+        "interval": "once",
+        "tooltip": false
+    },
+
+    "custom/group-separator": {
+        "format": "<b> · </b>",
+        "interval": "once",
+        "tooltip": false
+    },
+}
