@@ -1,9 +1,18 @@
-#include <stdio.h>
-#include <stdlib.h>
-
+#include "rgba.h"
+#include "token.h"
 #include "lexer.h"
+#include "parser.h"
+
+
+typedef struct _token {
+        char    text[NAME_MAX_LEN + 1];
+        uint8_t type;
+        uint16_t refcount;
+} token_t;
 
 int main(int argc, char **argv) {
+        printf("ciao!\n");
+
         if (argc != 2) {
                 fprintf(stderr, "Wrong number of arguments.\nUsage: %s path/to/file", argv[0]);
                 return 1;
@@ -11,7 +20,7 @@ int main(int argc, char **argv) {
 
         FILE *fp;
         size_t file_size;
-        char *file_text;
+        char *text;
 
         fp = fopen(argv[1], "r");
         if (fp == NULL) {
@@ -25,23 +34,27 @@ int main(int argc, char **argv) {
         fseek(fp, 0, SEEK_SET);
 
         /* allocate memory for text and load file */
-        file_text = malloc(file_size + 1);
-        if (file_text == NULL) {
+        text = malloc(file_size + 1);
+        if (text == NULL) {
                 perror("Could not load file");
                 fclose(fp);
                 return 1;
         }
-        fread(file_text, file_size, 1, fp);
-        file_text[file_size] = 0;
+        fread(text, file_size, 1, fp);
+        text[file_size] = 0;
         fclose(fp);
+        printf("qua ci siamo\n");
 
-        // file_text[15] = 0;
+        psParse(text);
 
-        lexer_t *lx = lx_create(file_text);
 
-        for (int i = 0; i < 100; i++) {
-               if (lx_next_token(lx).type == TOK_ERR) printf("cazzo...\n");
-        }
 
-        lx_destroy(lx);
+
+
+
+
+
+        return 0;
+
 }
+
