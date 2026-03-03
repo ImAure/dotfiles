@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
+#include "color.h"
 #include "lexer.h"
+#include "parser.h"
 
 int main(int argc, char **argv) {
         if (argc != 2) {
@@ -37,11 +40,46 @@ int main(int argc, char **argv) {
 
         // file_text[15] = 0;
 
-        lexer_t *lx = lx_create(file_text);
+        // lexer_t *lx = lx_create(file_text);
+        //
+        // for (int i = 0; i < 100; i++) {
+        //        if (lx_next_token(lx).type == TOK_ERR) printf("cazzo...\n");
+        // }
+        // lx_destroy(lx);
 
-        for (int i = 0; i < 100; i++) {
-               if (lx_next_token(lx).type == TOK_ERR) printf("cazzo...\n");
+        parser_t *ps = ps_create(file_text);
+        while (!ps_is_at_end(ps)) {
+                ps_advance(ps);
         }
 
-        lx_destroy(lx);
+        ps_destroy(ps);
+        color_t c;
+        c.type = RGB;
+        strcpy(c.name, "ciao");
+        c.as.rgb.r = 13;
+        c.as.rgb.g = 14;
+        c.as.rgb.b = 15;
+        strcpy(c.as.aliasof.name, "ciaone");
+        color_print(c);
+
+        colorlist_t *list = NULL;
+        colorlist_print(list);
+        list = colorlist_create();
+
+        c.type = RGB;
+        strcpy(c.name, "ciao");
+        c.as.rgb.r = 13;
+        c.as.rgb.g = 14;
+        c.as.rgb.b = 15;
+        colorlist_insert_color(list, c);
+
+        c.type = ALIAS;
+        strcpy(c.name, "ciaone");
+        c.as.rgb.r = 13;
+        c.as.rgb.g = 14;
+        c.as.rgb.b = 15;
+        strcpy(c.as.aliasof.name, "ciao");
+        colorlist_insert_color(list, c);
+
+        colorlist_print(list);
 }
