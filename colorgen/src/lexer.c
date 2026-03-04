@@ -1,12 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <stdint.h>
 
 #include "lexer.h"
 #include "private-lexer.h"
 
 static void token_print(token_t tok) {
-        printf("TOKEN at %zu:%zu,\tlen: %zu,\ttxt: '%.*s'\n", tok.line, tok.column, tok.len, (int)tok.len, tok.start);
+        printf("TOKEN at %zu:%zu,\tl: %zu,\ttxt: '%.*s'\n", tok.line, tok.column, tok.len, (int)tok.len, tok.start);
 }
 
 extern lexer_t *lx_create(char *stream) {
@@ -28,18 +30,17 @@ static inline char lx_peek(lexer_t *lx) {
 }
 
 static void lx_advance(lexer_t *lx) {
-        lx->p++;
-        if (lx_peek(lx) == SYM_NULLTERM) return;
         if (lx_peek(lx) == '\n') {
-                lx->column = 1;
                 lx->line++;
+                lx->column = 1;
         } else {
                 lx->column++;
         }
+        if (lx_peek(lx) != SYM_NULLTERM) lx->p++;
 }
 
 static void lx_skip_spaces(lexer_t *lx) {
-        while (isspace(lx_peek(lx))) lx_advance(lx);
+        while (isspace((uint8_t)lx_peek(lx))) lx_advance(lx);
 }
 
 static token_t lx_tokenize_symbol(lexer_t *lx, tokentype_t type, size_t len) {
@@ -52,6 +53,39 @@ static token_t lx_tokenize_symbol(lexer_t *lx, tokentype_t type, size_t len) {
         return tok;
 }
 
+static token_t lx_tokenize_comment(lexer_t *lx) {
+        token_t tok = lx_tokenize_symbol(lx, TOK_COMMENT, 0);
+        lx_advance(lx);
+        tok.len++;
+        if (lx_peek(lx) != SYM_SLASH) return lx_tokenize_symbol(lx, TOK_ERR, 1);
+        while ((lx_peek(lx) != SYM_NULLTERM) && (lx_peek(lx) != SYM_NEWLINE)) {
+                lx_advance(lx);
+                tok.len++;
+        }
+        return tok;
+}
+
+static token_t lx_tokenize_int(lexer_t *lx) {
+        token_t tok = lx_tokenize_symbol(lx, TOK_INT, 0);
+        while (isdigit(lx_peek(lx))) {
+                lx_advance(lx);
+                tok.len++;
+        }
+        return tok;
+}
+
+static token_t lx_tokenize_ident(lexer_t * lx) {
+        token_t tok = lx_tokenize_symbol(lx, TOK_ERR, 0);
+        while (islower(lx_peek(lx))) {
+                lx_advance(lx);
+                tok.len++;
+        }
+        if (tok.len == 4 && strncmp(tok.start, STR_TRUE, 4) == 0) tok.type = TOK_TRUE;
+        else if (tok.len == 5 && strncmp(tok.start, STR_FALSE, 5) == 0) tok.type = TOK_FALSE;
+        else tok.type = TOK_ERR;
+        return tok;
+}
+
 static token_t lx_tokenize_string(lexer_t *lx) {
         token_t tok;
         lx_advance(lx);
@@ -61,12 +95,18 @@ static token_t lx_tokenize_string(lexer_t *lx) {
                 tok.len++;
         }
         if (lx_peek(lx) == SYM_NULLTERM) return lx_tokenize_symbol(lx, TOK_ERR, 1);
+        lx_advance(lx);
         return tok;
 }
 
 extern token_t lx_next_token(lexer_t *lx) {
         token_t tok;
         lx_skip_spaces(lx);
+        if (isdigit(lx_peek(lx))) {
+                tok = lx_tokenize_int(lx);
+                token_print(tok);
+                return tok;
+        }
         switch (lx_peek(lx)) {
         case SYM_LBRACE:
                 tok = lx_tokenize_symbol(lx, TOK_LBRACE, 1);
@@ -81,7 +121,7 @@ extern token_t lx_next_token(lexer_t *lx) {
                 lx_advance(lx);
                 break;
         case SYM_RBRACKET:
-                tok = lx_tokenize_symbol(lx, TOK_LBRACKET, 1);
+                tok = lx_tokenize_symbol(lx, TOK_RBRACKET, 1);
                 lx_advance(lx);
                 break;
         case SYM_COLON:
@@ -92,16 +132,21 @@ extern token_t lx_next_token(lexer_t *lx) {
                 tok = lx_tokenize_symbol(lx, TOK_COMMA, 1);
                 lx_advance(lx);
                 break;
+        case SYM_HYPHEN:
+                tok = lx_tokenize_symbol(lx, TOK_HYPHEN, 1);
+                lx_advance(lx);
+                break;
+        case SYM_SLASH:
+                tok = lx_tokenize_comment(lx);
+                break;
         case SYM_QUOTES:
                 tok = lx_tokenize_string(lx);
-                lx_advance(lx);
                 break;
         case SYM_NULLTERM:
                 tok = lx_tokenize_symbol(lx, TOK_EOF, 1);
                 break;
         default:
-                tok = lx_tokenize_symbol(lx, TOK_ERR, 1);
-                lx_advance(lx);
+                tok = lx_tokenize_ident(lx);
                 break;
         }
         token_print(tok);

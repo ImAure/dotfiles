@@ -10,5 +10,7 @@ typedef struct _parser {
 } parser_t;
 
 static inline token_t ps_peek(parser_t *ps);
+static void ps_advance(parser_t *ps);
+static int ps_is_at_end(parser_t *ps);
 
 #endif /* PRIVATE_PARSER_H */

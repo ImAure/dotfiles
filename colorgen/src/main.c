@@ -47,12 +47,8 @@ int main(int argc, char **argv) {
         // }
         // lx_destroy(lx);
 
-        parser_t *ps = ps_create(file_text);
-        while (!ps_is_at_end(ps)) {
-                ps_advance(ps);
-        }
+        colorlist_t *list = ps_parse_colors(file_text);
 
-        ps_destroy(ps);
         color_t c;
         c.type = RGB;
         strcpy(c.name, "ciao");
@@ -62,9 +58,9 @@ int main(int argc, char **argv) {
         strcpy(c.as.aliasof.name, "ciaone");
         color_print(c);
 
-        colorlist_t *list = NULL;
-        colorlist_print(list);
-        list = colorlist_create();
+        // colorlist_t *list = NULL;
+        // colorlist_print(list);
+        // list = colorlist_create();
 
         c.type = RGB;
         strcpy(c.name, "ciao");
@@ -79,7 +75,7 @@ int main(int argc, char **argv) {
         c.as.rgb.g = 14;
         c.as.rgb.b = 15;
         strcpy(c.as.aliasof.name, "ciao");
-        colorlist_insert_color(list, c);
-
-        colorlist_print(list);
+        // colorlist_insert_color(list, c);
+        //
+        // colorlist_print(list);
 }

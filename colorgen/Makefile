@@ -1,6 +1,6 @@
 # compiler
 CC = gcc
-CFLAGS = -Wall -Wextra --pedantic -O2 -I$(INCLUDE_DIR)
+CFLAGS = -Wall -Wextra --pedantic -O2 -I$(INCLUDE_DIR) -MMD -MP
 
 # directories
 SRC_DIR = src
@@ -11,6 +11,8 @@ BIN_DIR = bin
 # files
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRCS))
+DEPS := $(OBJS:.o=.d)
+-include $(DEPS)
 TARGET = $(BIN_DIR)/main
 
 all: $(TARGET)
@@ -28,6 +30,7 @@ $(BUILD_DIR) $(BIN_DIR):
 	mkdir -p $@
 
 # clean build and binary files
-clean: rm -rf $(BUILD_DIR) $(BIN_DIR)
+clean:
+	rm -rf $(BUILD_DIR) $(BIN_DIR)
 
 .PHONY: all clean

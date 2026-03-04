@@ -1,6 +1,7 @@
 {
         "palette": [
                 {
+                        "numero": 1232
                         "name": "rosewater",
                         "value": "#f5e0dc",,
                 }, {
@@ -63,6 +64,11 @@
                         "color": "rosewater",
                         "isalpha": true,
                         "alpha": 22,
+                        false,
+                        true // questo è un commento "ciaooo"
+                        // certo
+                        // commento
+                        /ca
                 },
         ]
 }

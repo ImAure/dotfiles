@@ -11,6 +11,11 @@ typedef enum _tokentype {
         TOK_RBRACKET,
         TOK_COLON,
         TOK_COMMA,
+        TOK_HYPHEN,
+        TOK_COMMENT,
+        TOK_INT,
+        TOK_TRUE,
+        TOK_FALSE,
         TOK_STRING,
         TOK_EOF,
         TOK_ERR
@@ -18,7 +23,7 @@ typedef enum _tokentype {
 
 typedef struct _token {
         tokentype_t type;
-        char *start;
+        const char *start;
         size_t len;
         size_t line;
         size_t column;
