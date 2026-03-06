@@ -1,6 +1,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#define LEXER_DEBUG
+
 #include <stddef.h>
 
 /* TOKEN STUFF */
@@ -37,6 +39,7 @@ typedef struct _lexer lexer_t;
 extern lexer_t *lx_create(char *stream);
 extern void lx_destroy(lexer_t *lx);
 extern token_t lx_next_token(lexer_t *lx);
+extern void token_print(token_t tok);
 
 #endif /* LEXER_H */
 

@@ -1,0 +1,10 @@
+{
+        "rosewater": "#f5e0dc",
+        "flamingo": "#f2cdcd",
+        "pink": "#f5c2e7",
+        "red": "#f38ba8",,,
+        "maroon": "#eba0ac",
+        "accent": { "aliasof": "rosewater" }
+        // commento
+
+}

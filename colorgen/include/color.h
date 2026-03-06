@@ -38,7 +38,7 @@ extern colorlist_t *colorlist_create(void);
 extern void colorlist_destroy(colorlist_t *list);
 extern void colorlist_insert_color(colorlist_t *list, color_t color);
 extern void colorlist_print(colorlist_t *list);
-
+extern void colorlist_resolve_aliases(colorlist_t *list);
 
 
 #endif /* COLOR_H */

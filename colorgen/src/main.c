@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "color.h"
-#include "lexer.h"
 #include "parser.h"
 
 int main(int argc, char **argv) {
@@ -38,44 +37,47 @@ int main(int argc, char **argv) {
         file_text[file_size] = 0;
         fclose(fp);
 
-        // file_text[15] = 0;
+        colorlist_t *list = ps_parse_colorlist(file_text);
 
-        // lexer_t *lx = lx_create(file_text);
-        //
-        // for (int i = 0; i < 100; i++) {
-        //        if (lx_next_token(lx).type == TOK_ERR) printf("cazzo...\n");
-        // }
-        // lx_destroy(lx);
 
-        colorlist_t *list = ps_parse_colors(file_text);
 
+
+
+        if (!list) list = colorlist_create();
         color_t c;
         c.type = RGB;
-        strcpy(c.name, "ciao");
-        c.as.rgb.r = 13;
-        c.as.rgb.g = 14;
-        c.as.rgb.b = 15;
-        strcpy(c.as.aliasof.name, "ciaone");
-        color_print(c);
-
-        // colorlist_t *list = NULL;
-        // colorlist_print(list);
-        // list = colorlist_create();
-
-        c.type = RGB;
-        strcpy(c.name, "ciao");
-        c.as.rgb.r = 13;
-        c.as.rgb.g = 14;
-        c.as.rgb.b = 15;
+        strcpy(c.name, "rosso");
+        c.as.rgb.r = 250;
+        c.as.rgb.g = 11;
+        c.as.rgb.b = 12;
         colorlist_insert_color(list, c);
 
         c.type = ALIAS;
-        strcpy(c.name, "ciaone");
-        c.as.rgb.r = 13;
-        c.as.rgb.g = 14;
-        c.as.rgb.b = 15;
-        strcpy(c.as.aliasof.name, "ciao");
-        // colorlist_insert_color(list, c);
-        //
-        // colorlist_print(list);
+        strcpy(c.name, "sangue");
+        strcpy(c.as.aliasof.name, "lu");
+        colorlist_insert_color(list, c);
+
+        c.type = ALIAS;
+        strcpy(c.name, "blu");
+        strcpy(c.as.aliasof.name, "rosso");
+        colorlist_insert_color(list, c);
+
+        colorlist_print(list);
+
+        printf("Resolving aliases...\n");
+        colorlist_resolve_aliases(list);
+
+        colorlist_print(list);
+
+        printf("le rore?\n");
+        c.type = ALIAS;
+        strcpy(c.name, "carlo");
+        strcpy(c.as.aliasof.name, "luigi");
+        colorlist_insert_color(list, c);
+        c.type = ALIAS;
+        strcpy(c.name, "luigi");
+        strcpy(c.as.aliasof.name, "carlo");
+        colorlist_insert_color(list, c);
+        colorlist_resolve_aliases(list);
+        colorlist_print(list);
 }

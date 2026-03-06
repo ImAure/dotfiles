@@ -1,9 +1,13 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "color.h"
 #include "private-color.h"
+
+
+#define COLOR_DEBUG
 
 extern void color_print(color_t color) {
         printf("COLOR as ");
@@ -66,4 +70,36 @@ extern void colorlist_print(colorlist_t *list) {
                 color_print(list->colors[i]);
         }
         return;
+}
+
+static color_t *colorlist_find(colorlist_t *list, const char *name, size_t depth) {
+        if (depth >= list->count) {
+#ifdef COLOR_DEBUG
+                printf("Cyclic aliases!\n");
+#endif /* COLOR_DEBUG */
+                return NULL;
+        }
+        for (size_t i = 0; i < list->count; i++) {
+                if (strcmp(list->colors[i].name, name) == 0) {
+                        if (list->colors[i].type == ALIAS) return colorlist_find(list, list->colors[i].as.aliasof.name, depth + 1);
+                        else return &list->colors[i];
+                }
+        }
+        return NULL;
+}
+
+extern void colorlist_resolve_aliases(colorlist_t *list) {
+        for (size_t i = 0; i < list->count; i++) {
+                if (list->colors[i].type == ALIAS) {
+                        color_t *target = colorlist_find(list, list->colors[i].as.aliasof.name, 0);
+                        if (target == NULL) {
+#ifdef COLOR_DEBUG
+                                printf("Could not resolve alisas: %s -> %s\n", list->colors[i].name, list->colors[i].as.aliasof.name);
+#endif /* COLOR_DEBUG */
+                                continue;
+                        }
+                        list->colors[i].type = target->type;
+                        list->colors[i].as = target->as;
+                }
+        }
 }
