@@ -5,7 +5,10 @@
 #include "color.h"
 #include "parser.h"
 
+// #define MAIN_DEBUG
+
 int main(int argc, char **argv) {
+        printf("\n===== EXECUTION START =====\n");
         if (argc != 2) {
                 fprintf(stderr, "Wrong number of arguments.\nUsage: %s path/to/file", argv[0]);
                 return 1;
@@ -25,6 +28,7 @@ int main(int argc, char **argv) {
         fseek(fp, 0, SEEK_END);
         file_size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
+        printf("File size is %zu\n", file_size);
 
         /* allocate memory for text and load file */
         file_text = malloc(file_size + 1);
@@ -37,12 +41,14 @@ int main(int argc, char **argv) {
         file_text[file_size] = 0;
         fclose(fp);
 
-        colorlist_t *list = ps_parse_colorlist(file_text);
+        colorlist_t *list = ps_parse_palette(file_text);
+        colorlist_print(list);
+        colorlist_destroy(list);
 
 
 
 
-
+#ifdef MAIN_DEBUG
         if (!list) list = colorlist_create();
         color_t c;
         c.type = RGB;
@@ -80,4 +86,6 @@ int main(int argc, char **argv) {
         colorlist_insert_color(list, c);
         colorlist_resolve_aliases(list);
         colorlist_print(list);
+        colorlist_destroy(list);
+#endif
 }

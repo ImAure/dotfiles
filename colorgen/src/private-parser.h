@@ -6,14 +6,10 @@
 
 typedef struct _parser {
         enum {
-                PS_START,
-                PS_ROOT,
-                PS_COLOR,
-                PS_ALIAS,
-                PS_VALUE,
+                PS_OK,
                 PS_ERR,
                 PS_DONE
-        } state;
+        } status;
         lexer_t *lx;
         token_t current;
 } parser_t;

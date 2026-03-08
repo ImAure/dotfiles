@@ -1,6 +1,6 @@
 # compiler
 CC = gcc
-CFLAGS = -Wall -Wextra --pedantic -O2 -I$(INCLUDE_DIR) -MMD -MP
+CFLAGS = -Wall -Wextra --pedantic -O2 -I$(INCLUDE_DIR) -MD -MP
 
 # directories
 SRC_DIR = src
