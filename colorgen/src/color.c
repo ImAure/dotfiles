@@ -10,16 +10,17 @@
 #define COLOR_DEBUG
 
 extern void color_print(color_t color) {
-        printf("COLOR as ");
+        printf("Color: %s\n", color.name);
         switch (color.type) {
         case RGB:
-                printf("RGB\tname: '%s'\t value: r: %d, g: %d, b: %d\n", color.name, color.as.rgb.r, color.as.rgb.g, color.as.rgb.b);
+                printf("type: RGB\n\tr: %d\n\tg: %d\n\tb: %d\n", color.as.rgb.r, color.as.rgb.g, color.as.rgb.b);
+                // printf("RGB\n\tname: '%s'\n\tvalue:\n\tr: %d,\n\tg: %d,\n\tb: %d\n", color.name, color.as.rgb.r, color.as.rgb.g, color.as.rgb.b);
                 break;
         case RGBA:
-                printf("RGBA\tname: '%s'\t value: r: %d, g: %d, b: %d, a: %d\n", color.name, color.as.rgba.r, color.as.rgba.g, color.as.rgba.b, color.as.rgba.a);
+                printf("type: RGBA\n\tr: %d\n\tg: %d\n\tb: %d\n\ta: %d\n", color.as.rgba.r, color.as.rgba.g, color.as.rgba.b, color.as.rgba.a);
                 break;
         case ALIAS:
-                printf("ALIAS\tname: '%s'\t alias of '%s'\n", color.name, color.as.aliasof.name);
+                printf("type: ALIAS\n\tof: %s\n", color.as.aliasof.name);
                 break;
         }
 }
@@ -45,9 +46,11 @@ extern void colorlist_insert_color(colorlist_t *list, color_t color) {
         if (list == NULL) return;
         if (list->colors == NULL) return;
 
-        if ((float)list->count / (float)list->capacity < COLORLIST_FILL_FACTOR) {
-                list->colors = realloc(list->colors, 2 * sizeof (color_t) * list->capacity);
-                if (list->colors == NULL) { return; }
+        if (((float)list->count / (float)list->capacity) > COLORLIST_FILL_FACTOR) {
+                list->colors = realloc(list->colors, 2 * list->capacity * sizeof (color_t));
+                if (list->colors == NULL) {
+                        return;
+                }
                 list->capacity *= 2;
         }
         list->colors[list->count++] = color;

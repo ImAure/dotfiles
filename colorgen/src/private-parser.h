@@ -4,6 +4,8 @@
 #include "color.h"
 #include "lexer.h"
 
+#define STR_ALIASOF "aliasof"
+
 typedef struct _parser {
         enum {
                 PS_OK,

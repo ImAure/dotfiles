@@ -41,7 +41,10 @@ int main(int argc, char **argv) {
         file_text[file_size] = 0;
         fclose(fp);
 
-        colorlist_t *list = ps_parse_palette(file_text);
+        colorlist_t *list = parse_palette(file_text);
+        colorlist_print(list);
+        printf(" ORA I ALIAS \n");
+        colorlist_resolve_aliases(list);
         colorlist_print(list);
         colorlist_destroy(list);
 

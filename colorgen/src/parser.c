@@ -8,6 +8,7 @@
 
 #define CASE_PRINT(A) case (A): printf("%s", #A); break
 #define MAX(A, B) ((A) > (B)) ? (A) : (B)
+#define MIN(A, B) ((A) < (B)) ? (A) : (B)
 
 #define PARSER_DEBUG
 
@@ -61,8 +62,8 @@ static void ps_advance(parser_t *ps) {
                 case TOK_COMMENT: ps_advance(ps);       break;
                 default: break;
         }
-        // token_print(ps_peek(ps));
-        // ps_print_status(ps);
+        token_print(ps_peek(ps));
+        ps_print_status(ps);
 }
 
 static int ps_expect(parser_t *ps, tokentype_t type) {
@@ -78,7 +79,50 @@ static inline void ps_consume(parser_t *ps, tokentype_t type) {
         if (ps_match(ps, type)) ps_advance(ps);
 }
 
+static uint8_t hextobyte(const char *s) {
+        if ((*s == 0) || (*(s + 1) == 0)) return 0;
+        char buf[3] = {s[0], s[1], 0};
+        return strtol(buf, NULL, 16);
+}
+
 static void ps_parse_value(parser_t *ps, color_t* color) {
+        if (ps_match(ps, TOK_STRING)) {
+                switch (ps->current.len - 1) {
+                case 6: /* |#|RRGGBB| */
+                        color->type = RGB;
+                        color->as.rgb.r = hextobyte(ps->current.start+1);
+                        color->as.rgb.g = hextobyte(ps->current.start+1+2);
+                        color->as.rgb.b = hextobyte(ps->current.start+1+4);
+                        break;
+                case 8: /* |#|RRGGBBAA| */
+                        color->type = RGBA;
+                        color->as.rgba.r = hextobyte(ps->current.start+1);
+                        color->as.rgba.g = hextobyte(ps->current.start+1+2);
+                        color->as.rgba.b = hextobyte(ps->current.start+1+4);
+                        color->as.rgba.a = hextobyte(ps->current.start+1+6);
+                        break;
+                default:
+                        ps->status = PS_ERR;
+                        return;
+                }
+                ps_advance(ps);
+        }
+        if (ps_match(ps, TOK_LBRACE)) {
+                printf("L'HO TROVATA LA PARENTESI\n");
+                color->type = ALIAS;
+                ps_advance(ps);
+                if (!ps_match(ps, TOK_STRING)) {
+                        ps->status = PS_ERR;
+                        return;
+                }
+                if (strncmp(ps->current.start, STR_ALIASOF, ps->current.len) == 0) {
+                        ps_advance(ps);
+                        if (!ps_expect(ps, TOK_COLON)) return;
+                        memcpy(color->as.aliasof.name, ps->current.start, MIN(ps->current.len, COLOR_NAME_MAX_LEN));
+                        ps_advance(ps);
+                        ps_expect(ps, TOK_RBRACE);
+                }
+        }
 
 }
 
@@ -94,24 +138,27 @@ static void ps_parse_member(parser_t *ps, colorlist_t *list) {
         ps_advance(ps);
 
         if (!ps_expect(ps, TOK_COLON)) goto PS_PARSE_MEMBER_ERR;
-        if (!ps_match(ps, TOK_STRING)) goto PS_PARSE_MEMBER_ERR;
+        if (!(ps_match(ps, TOK_STRING) || ps_match(ps, TOK_LBRACE))) goto PS_PARSE_MEMBER_ERR;
         ps_parse_value(ps, &color);
+        colorlist_insert_color(list, color);
+        return;
 
-
-PS_PARSE_MEMBER_ERR:
+        PS_PARSE_MEMBER_ERR:
+        printf("===== PARSE_MEMBER_ERR =====\n");
         ps->status = PS_ERR;
 }
 
 static void ps_parse_members(parser_t *ps, colorlist_t *list) {
         do {
                 ps_parse_member(ps, list);
-        } while ((ps->status != PS_ERR) && ps_expect(ps, TOK_COMMA)) {
+                if (ps_match(ps, TOK_RBRACE)) break;
+        } while ((ps->status != PS_ERR) && ps_expect(ps, TOK_COMMA));
 }
 
 
 extern colorlist_t *parse_palette(char *json) {
         if (json == NULL) return NULL;
-        parser_t *ps = parser_create(json);
+        parser_t *ps = ps_create(json);
         colorlist_t *list = colorlist_create();
         if (ps == NULL) goto PARSE_PALETTE_ERR;
         if (list == NULL) goto PARSE_PALETTE_ERR; 
@@ -120,13 +167,16 @@ extern colorlist_t *parse_palette(char *json) {
         if (!ps_expect(ps, TOK_LBRACE)) goto PARSE_PALETTE_ERR;
         if (!ps_match(ps, TOK_RBRACE)) {
                 ps_parse_members(ps, list);
+                if (ps_match(ps, TOK_RBRACE)) printf("io direi che ho finito\n");
+                ps_print_status(ps);
                 if (ps->status == PS_ERR) goto PARSE_PALETTE_ERR;
         }
 
         ps_destroy(ps);
         return list;
 
-PARSE_PALETTE_ERR:
+        PARSE_PALETTE_ERR:
+        printf("===== PARSE_PALETTE_ERR =====\n");
         if (ps) ps_destroy(ps);
         if (list) colorlist_destroy(list);
         return NULL;
