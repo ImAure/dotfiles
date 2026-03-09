@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 
         colorlist_t *list = parse_palette(file_text);
         colorlist_print(list);
-        printf(" ORA I ALIAS \n");
+        printf("===== Now resolving aliases... =====\n");
         colorlist_resolve_aliases(list);
         colorlist_print(list);
         colorlist_destroy(list);

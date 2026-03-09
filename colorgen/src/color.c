@@ -10,17 +10,17 @@
 #define COLOR_DEBUG
 
 extern void color_print(color_t color) {
-        printf("Color: %s\n", color.name);
+        printf("color: %10s | ", color.name);
         switch (color.type) {
         case RGB:
-                printf("type: RGB\n\tr: %d\n\tg: %d\n\tb: %d\n", color.as.rgb.r, color.as.rgb.g, color.as.rgb.b);
-                // printf("RGB\n\tname: '%s'\n\tvalue:\n\tr: %d,\n\tg: %d,\n\tb: %d\n", color.name, color.as.rgb.r, color.as.rgb.g, color.as.rgb.b);
+                printf("type: RGB   |  r: %3d g: %3d b: %3d\n", color.as.rgb.r, color.as.rgb.g, color.as.rgb.b);
+
                 break;
         case RGBA:
-                printf("type: RGBA\n\tr: %d\n\tg: %d\n\tb: %d\n\ta: %d\n", color.as.rgba.r, color.as.rgba.g, color.as.rgba.b, color.as.rgba.a);
+                printf("type: RGBA  |  r: %3d g: %3d b: %3d a: %3d\n", color.as.rgba.r, color.as.rgba.g, color.as.rgba.b, color.as.rgba.a);
                 break;
         case ALIAS:
-                printf("type: ALIAS\n\tof: %s\n", color.as.aliasof.name);
+                printf("type: ALIAS | of: %10s\n", color.as.aliasof.name);
                 break;
         }
 }
