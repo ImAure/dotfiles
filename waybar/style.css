@@ -1,24 +1,25 @@
 @import "themes/catppuccin/mocha.css";
 
 * {
-    border: none;
-    min-height: 0px;
-    font-family: "FiraCode Nerd Font Propo", "Font Awesome 7 Free", "FiraCode Nerd Font";
-    font-size: 12px;
-    font-feature-settings: "cv11,cv14"
+        border: none;
+        min-height: 0px;
+        font-family: "FiraCode Nerd Font Propo", "Font Awesome 7 Free", "FiraCode Nerd Font";
+        font-size: 11px;
+        padding: 1px;
+        font-feature-settings: "cv11,cv14"
 }
 
 window#waybar {
-    background: transparent;
-    color: @foreground_active;
+        background: transparent;
+        color: @foreground_active;
 }
 
 #custom-arch { 
-    color: @sky;
+        color: @sky;
 }
 
 #custom-separator {
-    color: @accent;
+        color: @accent;
 }
 
 #custom-separator + #cava.hidden {
@@ -28,28 +29,28 @@ window#waybar {
         min-width: 0;
 }
 #custom-group-separator {
-    color: @accent;
+        color: @accent;
 }
 
 .modules-left {
-    border: 1px solid @accent;
-    border-radius: 5px;
-    padding: 0px 9px;
-    background-color: @background_alpha;
+        border: 0px solid @accent;
+        border-radius: 5px;
+        padding: 0px 7px;
+        background-color: @background_alpha;
 }
 
 .modules-center {
-    border: 1px solid @accent;
-    border-radius: 5px;
-    padding: 0px 9px;
-    background-color: @background_alpha;
+        border: 0px solid @accent;
+        border-radius: 5px;
+        padding: 0px 7px;
+        background-color: @background_alpha;
 }
 
 .modules-right {
-    border: 1px solid @accent;
-    border-radius: 5px;
-    padding: 0px 8px;
-    background-color: @background_alpha;
+        border: 0px solid @accent;
+        border-radius: 5px;
+        padding: 0px 7px;
+        background-color: @background_alpha;
 }
 
 @import "styles/pulseaudio.css";

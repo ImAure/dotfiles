@@ -1,7 +1,7 @@
 // -*- mode: json -*-
 
 {
-        "layer": "top",
+        "layer": "bottom",
         "position": "top",
         "margin-top": 12,
         "margin-right": 12,
@@ -52,7 +52,7 @@
 
         "user": {
                 "interval" : 1,
-                "format": "<b>{user} {work_H}:{work_M}:{work_S} </b>",
+                "format": "<b>{user} {work_H}:{work_M}:{work_S} </b>"
         },
 
         "group/host": {
@@ -66,7 +66,7 @@
                         "custom/arch",
                         "custom/group-separator",
                         "user"
-                ],
+                ]
 
         },
 
@@ -75,17 +75,17 @@
         //===================================|
         "cpu": {
                 "interval": 5,
-                "format": "<b> {usage}%</b>",
+                "format": "<b> {usage}%</b>"
         },
 
         "disk": {
                 "interval": 30,
-                "format": "<b> {percentage_used}% {path}</b>",
+                "format": "<b> {percentage_used}% {path}</b>"
         },
 
         "memory": {
                 "interval": 5,
-                "format": "<b> {percentage}%</b>",
+                "format": "<b> {percentage}%</b>"
         },
 
         "group/hardware": {
@@ -101,7 +101,7 @@
                         "custom/group-separator",
                         "disk",
                         "custom/group-separator"
-                ],
+                ]
         },
 
         //=================================================|
@@ -114,7 +114,7 @@
 
         "backlight/slider": {
                 "min": 0,
-                "max": 100,
+                "max": 100
         },
 
         "pulseaudio": {
@@ -139,7 +139,7 @@
                         "pulseaudio",
                         "pulseaudio/slider",
                         "custom/group-separator"
-                ],
+                ]
         },
 
         "group/light": {
@@ -153,7 +153,7 @@
                         "backlight",
                         "backlight/slider",
                         "custom/group-separator"
-                ],
+                ]
         },
 
         "tray": {
@@ -190,7 +190,7 @@
                         "network",
                         "bluetooth",
                         "custom/group-separator"
-                ],
+                ]
         },
 
 
@@ -257,8 +257,8 @@
 
         "cava": {
                 "framerate": 30,
-                "autosens": 0,
-                "sensitivity": 40,
+                "autosens": 1,
+                "sensitivity": 1,
                 "bars": 12,
                 "lower_cutoff_freq": 90,
                 "higher_cutoff_freq": 10000,
@@ -273,11 +273,11 @@
                 "bar_delimiter": 0,
                 "monstercat": false,
                 "waves": false,
-                "noise_reduction": 0.70,
-                "input_delay": 2,
+                "noise_reduction": 0,
+                "input_delay": 1,
                 "data_format": "binary",
-                "gradient": 1,
-                "format-icons": ["▁", "▂", "▂", "▃", "▃", "▄", "▄", "▅", "▅", "▆", "▆", "▇", "█" ],
+                "gradient": 0,
+                "format-icons": ["▁", "▂", "▂", "▃", "▃", "▄", "▄", "▅", "▅", "▆", "▆", "▇", "█" ]
         },
 
         // "custom/cava": {
