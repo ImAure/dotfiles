@@ -1,0 +1,11 @@
+width = 500
+height = 300
+location=centers
+show=drun
+prompt=Apps
+filter_rate=100
+allow_markup=true
+no_actions=true
+halign=fill
+content_halign=fill
+insensitive=true

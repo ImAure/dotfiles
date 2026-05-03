@@ -1,0 +1,166 @@
+/* @import "themes/catppuccin/mocha.css"; */
+@define-color rosewater #f5e0dc;
+@define-color flamingo #f2cdcd;
+@define-color pink #f5c2e7;
+@define-color mauve #cba6f7;
+@define-color red #f38ba8;
+@define-color maroon #eba0ac;
+@define-color peach #fab387;
+@define-color yellow #f9e2af;
+@define-color green #a6e3a1;
+@define-color teal #94e2d5;
+@define-color sky #89dceb;
+@define-color sapphire #74c7ec;
+@define-color blue #89b4fa;
+@define-color lavender #b4befe;
+@define-color text #cdd6f4;
+@define-color subtext1 #bac2de;
+@define-color subtext0 #a6adc8;
+@define-color overlay2 #9399b2;
+@define-color overlay1 #7f849c;
+@define-color overlay0 #6c7086;
+@define-color surface2 #585b70;
+@define-color surface1 #45475a;
+@define-color surface0 #313244;
+@define-color base #1e1e2e;
+@define-color mantle #181825;
+@define-color crust #11111b;
+
+@define-color accent @rosewater;
+@define-color accent_alpha alpha(@accent, 0.5);
+@define-color foreground_active @text;
+@define-color foreground_inactive @overlay1;
+@define-color background @base;
+@define-color background_alpha alpha(@base, 0.3);
+
+/* * { */
+/*     border: none; */
+/*     font-family: "FiraCode Nerd Font Propo", "Font Awesome 7 Free", "FiraCode Nerd Font"; */
+/*     font-size: 12px; */
+/* } */
+
+window {
+        margin: 5px;
+        border: none;
+        background: @background_alpha;
+        /* background-color: @base; */
+        border-radius: 20px;
+        /* margin: 1px; */
+        /* border: 1px solid @accent; */
+        /* background-color: @base; */
+        box-shadow: none;
+}
+
+#input {
+        padding: 5px 10jx;
+        margin: 10px;
+        border: 1px solid @accent;
+        color: @text;
+        font-weight: bold;
+        background-color: @background_alpha;
+        outline: none;
+        border-radius: 5px;
+}
+
+#input:focus {
+        outline: 1px solid text;
+        color: @text;
+        box-shadow: none;
+}
+
+/* #input:focus { */
+/*         border: none; */
+/*         outline: none; */
+/*         margin-bottom: 0px; */
+/* } */
+
+#inner-box {
+        margin: 10px;
+        border: none;
+        color: @foreground_inactive;
+        font-weight: bold;
+        background-color: @background_alpha;
+        /* background-color: red; */
+        border-radius: 20px;
+        outline: none
+}
+
+#outer-box {
+        margin: none;
+        border: 1px solid @accent;
+        border-radius: 5px;
+        background-color: @background_alpha;
+}
+
+#scroll {
+        margin-top: 5px;
+        border: none;
+        border-radius: 4px;
+        margin-bottom: 5px;
+}
+
+#img{
+        margin-right: 10px;
+}
+
+#img:selected {
+        background-color: #ff0000;
+        margin-right: 10px;
+        border-radius: 10px;
+}
+
+#text:selected {
+        color: @text;
+        margin: 0px 0px;
+        border: none;
+        border-radius: 10px;
+        background-color: transparent /* #89b4fa; */
+}
+
+#entry {
+        margin: 0px 0px;
+        border: none;
+        border-radius: 5px;
+        background-color: transparent;
+}
+
+#entry:selected {
+        margin: 0px 0px;
+        border: 1px solid @accent;
+        border-radius: 5px;
+        background-color: transparent;
+}
+/* #input { */
+/*     background-color: @red; */
+/*     margin: 5px; */
+/*     border: 1px solid @base; */
+/*     color: @foreground_active; */
+/*     /* background-color: #3b4252; */ 
+/* } */
+/**/
+/* #inner-box { */
+/*     margin: 5px; */
+/*     border: none; */
+/*     background-color: #2e3440; */
+/* } */
+/**/
+/* #outer-box { */
+/*     margin: 5px; */
+/*     border: none; */
+/*     background-color: #000000; */
+/* } */
+/**/
+/* #scroll { */
+/*     margin: 0px; */
+/*     border: none; */
+/* } */
+/**/
+/* #text { */
+/*     margin: 5px; */
+/*     border: none; */
+/*     color: #d8dee9; */
+/* } */
+/**/
+/* #entry:selected { */
+/*     background-color: #3b4252; */
+/* } */
