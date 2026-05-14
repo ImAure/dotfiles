@@ -120,7 +120,8 @@
         "pulseaudio": {
                 "format": "<b> {volume}%</b>",
                 "format-muted": "<b> {volume}%</b>",
-                "format-bluetooth": "<b>󰂰 {volume}%</b>"
+                "format-bluetooth": "<b>󰂰 {volume}%</b>",
+                "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
         },
 
         "pulseaudio/slider": {
@@ -252,48 +253,41 @@
                 },
                 "tooltip": false, /* to be configured and set to true */
                 "tooltip-format": "<b>{timeTo}</b>",
-                "format-time": "<b>{H}h {M}m</b>",
+                "format-time": "<b>{H}h {M}m</b>"
         },
 
         "cava": {
                 "framerate": 30,
                 "autosens": 1,
-                "sensitivity": 1,
-                "bars": 12,
+                "sensitivity": 4,
+                "bars": 14,
                 "lower_cutoff_freq": 90,
                 "higher_cutoff_freq": 10000,
-                "sleep_timer": 3,
+                "sleep_timer": 1,
                 "hide_on_silence": false,
-                "format_silent": "<b></b>",
-                // "format_silent": "quiet",
+                "format_silent": "<b> </b>",
                 "method": "pipewire",
                 "source": "auto",
                 "stereo": false,
                 "reverse": false,
                 "bar_delimiter": 0,
                 "monstercat": false,
-                "waves": false,
-                "noise_reduction": 0,
-                "input_delay": 1,
-                "data_format": "binary",
-                "gradient": 0,
-                "format-icons": ["▁", "▂", "▂", "▃", "▃", "▄", "▄", "▅", "▅", "▆", "▆", "▇", "█" ]
+                "waves": true,
+                "noise_reduction": 0.77,
+                "input_delay": 2,
+                // "format-icons": ["▁", "▂","▃","▄","▅","▇","█" ]
+                "format-icons": [
+                        "_",
+                        "▁", "▁",
+                        "▂", "▂", "▂",
+                        "▃", "▃", "▃",
+                        "▄", "▄", "▄",
+                        "▅", "▅", "▅",
+                        "▆", "▆",
+                        "█"
+                ],
+                "on-click": "playerctl play-pause",
         },
-
-        // "custom/cava": {
-        //         // "exec": "cava -p ~/.config/cava/config | sed 's/;//g'",
-        //         "exec": "cava",
-        //         "return-type": "raw",
-        //         "format": "{}",
-        //         "escape": false,
-        //         "framerate": 30,
-        //         "autosense": 1,
-        //         "bars": 12,
-        //         "lower_cutoff_freq": 40,
-        //         "higher_cutoff_freq": 10000,
-        // },
-
-
 
         "custom/separator": {
                 "format": "<b>|</b>",
