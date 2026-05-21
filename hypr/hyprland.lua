@@ -4,6 +4,8 @@ require("src.binds")
 require("src.animations")
 require("src.input")
 require("src.rules")
+require("src.environment")
+require("src.plugins")
 
 hl.on("hyprland.start", function()
         hl.exec_cmd("sudo systemctl start --now tlp bluetooth keyd")

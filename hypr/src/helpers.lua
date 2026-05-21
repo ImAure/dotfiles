@@ -3,6 +3,7 @@ local H = {}
 -- keys
 H.mod = "SUPER"
 H.lmb = "mouse:272"
+H.rmb = "mouse:273"
 H.mmb = "mouse:274"
 H.audio_up_key   = "XF86AudioRaiseVolume"
 H.audio_down_key = "XF86AudioLowerVolume"
@@ -12,11 +13,12 @@ H.brightness_up_key   = "XF86MonBrightnessUp"
 H.brightness_down_key = "XF86MonBrightnessDown"
 
 -- apps
-H.terminal = "kitty"
-H.browser  = "zen-browser"
-H.editor   = "nvim"
-H.explorer = "yazi"
-H.menu     = "wofi --show drun -c ~/.config/wofi/config -s ~/.config/wofi/style.css"
+H.terminal        = "kitty"
+H.browser         = "zen-browser --blank-window"
+H.browser_recover = "zen-browser"
+H.editor          = "nvim"
+H.explorer        = "yazi"
+H.menu            = "wofi --show drun -c ~/.config/wofi/config -s ~/.config/wofi/style.css"
 H.menu_bin = "wofi --show  run -c ~/.config/wofi/config -s ~/.config/wofi/style.css"
 
 -- functions

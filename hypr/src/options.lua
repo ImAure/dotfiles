@@ -139,5 +139,9 @@ hl.config({
         animations = {
                 enabled = true,
                 workspace_wraparound = false
+        },
+
+        xwayland = {
+                force_zero_scaling = true
         }
 })

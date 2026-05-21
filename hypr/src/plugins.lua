@@ -1,0 +1,7 @@
+hl.config({
+        plugin = {
+                Hyprdrive = {
+
+                }
+        }
+})
