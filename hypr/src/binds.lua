@@ -35,8 +35,10 @@ hl.bind("SUPER + CTRL  + L", hl.dsp.exec_cmd("hyprlock"))
 
 -- WORKSPACES & WINDOWS & MOVEMENT
 --- move focus
-hl.bind("SUPER + H", hl.dsp.layout("focus l"))
-hl.bind("SUPER + L", hl.dsp.layout("focus r"))
+-- hl.bind("SUPER + H", hl.dsp.focus({ direction = "l" }))
+-- hl.bind("SUPER + L", hl.dsp.focus({ direction = "r" }))
+hl.bind("SUPER + H", smart_focus("l", "r"))
+hl.bind("SUPER + L", smart_focus("r", "r"))
 hl.bind("SUPER + J", smart_focus("d", "r+1"))
 hl.bind("SUPER + K", smart_focus("u", "r-1"))
 
