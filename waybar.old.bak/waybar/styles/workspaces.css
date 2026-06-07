@@ -1,7 +1,0 @@
-#workspaces button {
-    color: @foreground_inactive;
-}
-
-#workspaces button.active {
-    color: @accent;
-}

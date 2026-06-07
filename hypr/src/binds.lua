@@ -31,22 +31,26 @@ hl.bind("SUPER +       + W", hl.dsp.exec_cmd(BROWSER))
 hl.bind("SUPER + SHIFT + W", hl.dsp.exec_cmd("~/.local/bin/dm-zen"))
 hl.bind("SUPER +       + B", hl.dsp.exec_cmd("pkill waybar || waybar"))
 hl.bind("SUPER + CTRL  + S", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
-hl.bind("SUPER + CTRL  + L", hl.dsp.exec_cmd("hyprlock"))
+-- hl.bind("SUPER + CTRL  + L", hl.dsp.exec_cmd("hyprlock"))
 
 -- WORKSPACES & WINDOWS & MOVEMENT
 --- move focus
--- hl.bind("SUPER + H", hl.dsp.focus({ direction = "l" }))
--- hl.bind("SUPER + L", hl.dsp.focus({ direction = "r" }))
 hl.bind("SUPER + H", smart_focus("l", "r"))
 hl.bind("SUPER + L", smart_focus("r", "r"))
 hl.bind("SUPER + J", smart_focus("d", "r+1"))
 hl.bind("SUPER + K", smart_focus("u", "r-1"))
+hl.bind("SUPER + CTRL + H", hl.dsp.focus({ monitor = "+1" }))
+hl.bind("SUPER + CTRL + L", hl.dsp.focus({ monitor = "-1" }))
 
 --- move windows
 hl.bind("SUPER + SHIFT + H", hl.dsp.layout("consume_or_expel prev"))
 hl.bind("SUPER + SHIFT + L", hl.dsp.layout("consume_or_expel next"))
 hl.bind("SUPER + SHIFT + J", hl.dsp.window.move({ workspace = "r+1" }))
 hl.bind("SUPER + SHIFT + K", hl.dsp.window.move({ workspace = "r-1" }))
+hl.bind("SUPER + SHIFT + CTRL + H", hl.dsp.window.move({ monitor = "+1" }))
+hl.bind("SUPER + SHIFT + CTRL + L", hl.dsp.window.move({ monitor = "-1" }))
+
+--- change monitor
 
 --- move columns
 hl.bind("SUPER + ALT   + H", hl.dsp.layout("swapcol l"))

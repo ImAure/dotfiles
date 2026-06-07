@@ -28,7 +28,7 @@
     "stat": false,
     "pipe": false,
     "showErrors": false,
-    "disableLinewrap": true,
+    "disableLinewrap": false,
     "hideCursor": false,
     "separator": " ~ ",
     "color": {

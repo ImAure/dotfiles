@@ -1,0 +1,3 @@
+function forget --wraps='clear && pkill -f waybar || 1 && sleep 1 && hyprctl dispatch fullscreen && sleep 1 && pkill -f hyprpaper && sleep 3 && q' --wraps='clear && pkill -f waybar || sleep 0 && sleep 1 && hyprctl dispatch fullscreen && sleep 1 && pkill -f hyprpaper && sleep 3 && q' --wraps='clear && sleep 1 && hyprctl dispatch fullscreen && sleep 1 && pkill -f waybar || sleep 0 && pkill -f hyprpaper && sleep 3 && q' --description 'alias forget=clear && sleep 1 && hyprctl dispatch fullscreen && sleep 1 && pkill -f waybar || sleep 0 && pkill -f hyprpaper && sleep 3 && q'
+    clear && sleep 1 && hyprctl dispatch fullscreen && sleep 1 && pkill -f waybar || sleep 0 && pkill -f hyprpaper && sleep 3 && q $argv
+end
