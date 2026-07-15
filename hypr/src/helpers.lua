@@ -64,9 +64,10 @@ end
 
 function H.smart_focus(dir, wp)
         return function()
-                local before = hl.get_active_window()
+                -- local is_special = hl.get_active_workspace()
+                local current = hl.get_active_window()
                 hl.dispatch(hl.dsp.focus({ direction = dir }))
-                if before == hl.get_active_window() then
+                if current == hl.get_active_window() then
                         hl.dispatch(hl.dsp.focus{ workspace = wp })
                 end
         end

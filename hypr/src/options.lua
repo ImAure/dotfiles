@@ -141,6 +141,11 @@ hl.config({
                 workspace_wraparound = false
         },
 
+        misc = {
+                enable_swallow = true,
+                swallow_regex = "^(kitty)$"
+        },
+
         xwayland = {
                 force_zero_scaling = true
         }

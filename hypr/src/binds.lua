@@ -35,8 +35,8 @@ hl.bind("SUPER + CTRL  + S", hl.dsp.exec_cmd("hyprshot -m region --clipboard-onl
 
 -- WORKSPACES & WINDOWS & MOVEMENT
 --- move focus
-hl.bind("SUPER + H", smart_focus("l", "r"))
-hl.bind("SUPER + L", smart_focus("r", "r"))
+hl.bind("SUPER + H", smart_focus("l", "r"), { repeating = true })
+hl.bind("SUPER + L", smart_focus("r", "r"), { repeating = true })
 hl.bind("SUPER + J", smart_focus("d", "r+1"))
 hl.bind("SUPER + K", smart_focus("u", "r-1"))
 hl.bind("SUPER + CTRL + H", hl.dsp.focus({ monitor = "+1" }))
