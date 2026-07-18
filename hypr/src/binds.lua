@@ -1,4 +1,5 @@
 local H = require("src.helpers")
+local P = require("src.peripherals")
 require("src.plugins")
 
 local TERMINAL = H.terminal
@@ -7,19 +8,24 @@ local BROWSER_RECOVER  = H.browser_recover
 local MENU     = H.menu
 local MENU_BIN = H.menu_bin
 
-local BRIGHTNESS_UP_KEY   = H.brightness_up_key
-local BRIGHTNESS_DOWN_KEY = H.brightness_down_key
+local BRIGHTNESS_UP_KEY   = P.brightness_up_key
+local BRIGHTNESS_DOWN_KEY = P.brightness_down_key
 
-local AUDIO_UP_KEY       = H.audio_up_key
-local AUDIO_DOWN_KEY     = H.audio_down_key
-local AUDIO_MUTE_KEY     = H.audio_mute_key
-local AUDIO_MIC_MUTE_KEY = H.audio_mic_mute_key
+local AUDIO_UP_KEY       = P.audio_up_key
+local AUDIO_DOWN_KEY     = P.audio_down_key
+local AUDIO_MUTE_KEY     = P.audio_mute_key
+local AUDIO_MIC_MUTE_KEY = P.audio_mic_mute_key
 
-local MOUSE_LEFT   = H.lmb
-local MOUSE_RIGHT  = H.rmb
-local MOUSE_MIDDLE = H.mmb
+local MOUSE_LEFT   = P.mouse_left_button
+local MOUSE_RIGHT  = P.mouse_right_button
+local MOUSE_MIDDLE = P.mouse_middle_button
+local MOUSE_UP     = P.mouse_scroll_up
+local MOUSE_DOWN   = P.mouse_scroll_down
 
 local smart_focus = H.smart_focus
+local smart_move = H.smart_move
+
+hl.bind("SUPER + P", hl.dsp.window.pin())
 
 -- ESSENTIAL UTILITIES
 hl.bind("SUPER +       + return", hl.dsp.exec_cmd(TERMINAL))
@@ -37,16 +43,22 @@ hl.bind("SUPER + CTRL  + S", hl.dsp.exec_cmd("hyprshot -m region --clipboard-onl
 --- move focus
 hl.bind("SUPER + H", smart_focus("l", "r"), { repeating = true })
 hl.bind("SUPER + L", smart_focus("r", "r"), { repeating = true })
-hl.bind("SUPER + J", smart_focus("d", "r+1"))
-hl.bind("SUPER + K", smart_focus("u", "r-1"))
-hl.bind("SUPER + CTRL + H", hl.dsp.focus({ monitor = "+1" }))
-hl.bind("SUPER + CTRL + L", hl.dsp.focus({ monitor = "-1" }))
+hl.bind("SUPER + J", smart_focus("d", "r+1"), { repeating = true })
+hl.bind("SUPER + K", smart_focus("u", "r-1"), { repeating = true })
+hl.bind("SUPER + CTRL + H", smart_focus("m", "+1")) -- "m" is a custom value, short for monitor
+hl.bind("SUPER + CTRL + L", smart_focus("m", "-1"))
 
 --- move windows
-hl.bind("SUPER + SHIFT + H", hl.dsp.layout("consume_or_expel prev"))
-hl.bind("SUPER + SHIFT + L", hl.dsp.layout("consume_or_expel next"))
-hl.bind("SUPER + SHIFT + J", hl.dsp.window.move({ workspace = "r+1" }))
-hl.bind("SUPER + SHIFT + K", hl.dsp.window.move({ workspace = "r-1" }))
+-- hl.bind("SUPER + SHIFT + H", hl.dsp.layout("consume_or_expel prev"), { repeating = true })
+-- hl.bind("SUPER + SHIFT + L", hl.dsp.layout("consume_or_expel next"), { repeating = true })
+-- hl.bind("SUPER + SHIFT + J", hl.dsp.window.move({ workspace = "r+1" }))
+-- hl.bind("SUPER + SHIFT + K", hl.dsp.window.move({ workspace = "r-1" }))
+
+hl.bind("SUPER + SHIFT + H", smart_move("l", "r"), { repeating = true })
+hl.bind("SUPER + SHIFT + L", smart_move("r", "r"), { repeating = true })
+hl.bind("SUPER + SHIFT + J", smart_move("d", "r+1"))
+hl.bind("SUPER + SHIFT + K", smart_move("u", "r-1"))
+
 hl.bind("SUPER + SHIFT + CTRL + H", hl.dsp.window.move({ monitor = "+1" }))
 hl.bind("SUPER + SHIFT + CTRL + L", hl.dsp.window.move({ monitor = "-1" }))
 
@@ -57,6 +69,12 @@ hl.bind("SUPER + ALT   + H", hl.dsp.layout("swapcol l"))
 hl.bind("SUPER + ALT   + L", hl.dsp.layout("swapcol r"))
 -- add here something to move the whole column to another workspace u/d
 -- add here something to move the whole column to another workspace u/d
+
+--- MOUSE
+hl.bind("SUPER + " .. MOUSE_UP,   smart_focus("d", "r+1"))
+hl.bind("SUPER + " .. MOUSE_DOWN, smart_focus("u", "r-1"))
+hl.bind("SUPER + SHIFT + " .. MOUSE_UP,   smart_move("d", "r+1"))
+hl.bind("SUPER + SHIFT + " .. MOUSE_DOWN, smart_move("u", "r-1"))
 
 --- specific workspaces
 hl.bind("SUPER +       + S", hl.dsp.workspace.toggle_special())
@@ -116,7 +134,7 @@ hl.bind("SUPER + " .. AUDIO_DOWN_KEY, H.player_prev())
 -- end)
 
 -- GESTURES
---
+
 hl.config({
         gestures = {
                 -- see https://wiki.hypr.land/Configuring/Gestures

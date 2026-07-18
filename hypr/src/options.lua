@@ -145,6 +145,10 @@ hl.config({
                 enable_swallow = true,
                 swallow_regex = "^(kitty)$"
         },
+         
+        binds = {
+                hide_special_on_workspace_change = true
+        },
 
         xwayland = {
                 force_zero_scaling = true

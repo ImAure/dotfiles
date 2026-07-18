@@ -62,15 +62,39 @@ function H.player_prev()
         return hl.dsp.exec_cmd("playerctl previous")
 end
 
-function H.smart_focus(dir, wp)
+function H.smart_focus(dir, ws)
         return function()
-                -- local is_special = hl.get_active_workspace()
+                if dir == "m" then
+                        hl.dsp.focus({ monitor = ws })
+                        return
+                end
                 local current = hl.get_active_window()
                 hl.dispatch(hl.dsp.focus({ direction = dir }))
                 if current == hl.get_active_window() then
-                        hl.dispatch(hl.dsp.focus{ workspace = wp })
+                        hl.dispatch(hl.dsp.focus{ workspace = ws })
                 end
         end
 end
 
+function H.smart_move(dir, ws)
+        return function()
+                if dir == "l" then
+                        hl.dispatch(hl.dsp.layout("consume_or_expel prev"))
+                        return
+                elseif dir == "r" then
+                        hl.dispatch(hl.dsp.layout("consume_or_expel next"))
+                        return
+                end
+
+                local opposites = { u = "d", d = "u" }
+                local current = hl.get_active_window()
+                hl.dispatch(hl.dsp.focus({ direction = dir }))
+                if current == hl.get_active_window() then
+                        hl.dispatch(hl.dsp.window.move({ workspace = ws, follow = true }))
+                else
+                        hl.dispatch(hl.dsp.focus({ direction = opposites[dir] }))
+                        hl.dispatch(hl.dsp.window.move({ direction = dir }))
+                end
+        end
+end
 return H
