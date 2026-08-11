@@ -1,266 +1,275 @@
 {
-  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
-  "logo": {
-    "type": "auto",
-    "source": "",
-    "color": {
-      "1": "cyan",
-      "2": "blue"
-    },
-    "width": null,
-    "height": null,
-    "padding": {
-      "top": 1,
-      "left": 3,
-      "right": 6,
-      "bottom": 1        
-    },
-    "printRemaining": true,
-    "preserveAspectRatio": true,
-    "recache": false,
-    "position": "left",
-    "chafa": {
-      "fgOnly": true,
-      "symbols": "block+border+space-wide-inverted"
-    }
-  },
-  "display": {
-    "stat": false,
-    "pipe": false,
-    "showErrors": false,
-    "disableLinewrap": true,
-    "hideCursor": false,
-    "separator": " ~ ",
-    "color": {
-      "keys": "cyan",
-      "title": "blue",
-      "output": "",
-      "separator": "yellow"
-    },
-    "brightColor": false,
-    "duration": {
-      "abbreviation": true,
-      "spaceBeforeUnit": "default"
-    },
-    "size": {
-      "maxPrefix": "YB",
-      "binaryPrefix": "iec",
-      "ndigits": 2,
-      "spaceBeforeUnit": "default"
-    },
-    "temp": {
-      "unit": "D",
-      "ndigits": 1,
-      "color": {
-        "green": "32",
-        "yellow": "93",
-        "red": "91"
-      },
-      "spaceBeforeUnit": "default"
-    },
-    "percent": {
-      "type": [
-        "num",
-        "num-color"
-      ],
-      "ndigits": 0,
-      "color": {
-        "green": "32",
-        "yellow": "93",
-        "red": "91"
-      },
-      "spaceBeforeUnit": "default",
-      "width": 0
-    },
-    "bar": {
-      "char": {
-        "elapsed": "■",
-        "total": "-"
-      },
-      "border": {
-        "left": "[ ",
-        "right": " ]",
-        "leftElapsed": "",
-        "rightElapsed": ""
-      },
-      "color": {
-        "elapsed": "auto",
-        "total": "97",
-        "border": "97"
-      },
-      "width": 10
-    },
-    "fraction": {
-      "ndigits": 2
-    },
-    "noBuffer": false,
-    "key": {
-      "width": 0,
-      "type": "icon",
-      "paddingLeft": 0
-    },
-    "freq": {
-      "ndigits": 2,
-      "spaceBeforeUnit": "default"
-    },
-    "constants": []
-  },
-  "general": {
-    "thread": true,
-    "processingTimeout": 5000,
-    "detectVersion": true,
-    "playerName": "",
-    "dsForceDrm": false
-  },
-  "modules": [
-    {
-      "type": "separator",
-      "string": "",
-      "outputColor": "yellow",
-      "times": 1
-    },
-    {
-      "type": "title",
-      "key": " ",
-      "keyIcon": "",
-      "fqdn": false,
-      "color": {
-        "user": "",
-        "at": "",
-        "host": ""
-      }
-    },
-    {
-      "type": "separator",
-      "string": "₊˚ ✧ ━━━━⊱⋆⊰━━━━ ✧ ₊˚",
-      "outputColor": "yellow",
-      "times": 1
-    },
-    {
-      "type": "os",
-      "keyIcon": ""
-    },
-    {
-      "type": "host",
-      "keyIcon": "󰌢"
-    },
-    {
-      "type": "uptime",
-      "keyIcon": ""
-    },
-    {
-      "type": "packages",
-      "keyIcon": "󰏖",
-      "disabled": [
-        "apk"
-      ],
-      "combined": false
-    },
-    {
-      "type": "shell",
-      "keyIcon": ""
-    },
-    {
-      "type": "wm",
-      "keyIcon": "",
-      "detectPlugin": false
-    },
-    // {
-    //   "type": "wmtheme",
-    //   "keyIcon": "󰓸"
-    // },
-    // {
-    //   "type": "theme",
-    //   "keyIcon": "󰉼"
-    // },
-    // {
-    //   "type": "icons",
-    //   "keyIcon": ""
-    // },
-    {
-      "type": "font",
-      "keyIcon": ""
-    },
-    // {
-    //   "type": "cursor",
-    //   "keyIcon": "󰆿"
-    // },
-    {
-      "type": "terminal",
-      "keyIcon": ""
-    },
-    {
-      "type": "terminalfont",
-      "keyIcon": ""
-    },
-    {
-      "type": "cpu",
-      "keyIcon": "",
-      "temp": false,
-      "showPeCoreCount": false
-    },
-    {
-      "type": "disk",
-      "keyIcon": "",
-      "showRegular": true,
-      "showExternal": true,
-      "showHidden": false,
-      "showSubvolumes": false,
-      "showReadOnly": true,
-      "showUnknown": false,
-      "folders": "",
-      "hideFolders": "/efi:/boot:/boot/*",
-      "hideFS": "",
-      "useAvailable": false,
-      "percent": {
-        "green": 50,
-        "yellow": 80,
-        "type": 0
-      }
-    },
-    {
-      "type": "battery",
-      "keyIcon": "",
-      "temp": false,
-      "percent": {
-        "green": 50,
-        "yellow": 20,
-        "type": 0
-      }
-    },
-    {
-      "type": "poweradapter",
-      "keyIcon": "󰚥"
-    },
-    {
-      "type": "locale",
-      "keyIcon": ""
-    },
-    {
-      "type": "separator",
-      "string": "₊˚ ✧ ━━━━⊱⋆⊰━━━━ ✧ ₊˚",
-      "outputColor": "yellow",
-      "times": 1
-    },
-    {
-      "type": "colors",
-      "key": " ",
-      "keyIcon": "",
-      "symbol": "block",
-      "paddingLeft": 0,
-      "block": {
-        "width": 3,
-        "range": [
-          0,
-          15
+        "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+        "logo": {
+                "type": "auto",
+                "source": "arch",
+                "width": null,
+                "height": null,
+                "padding": {
+                        "top": 1,
+                        "left": 3,
+                        "right": 6,
+                        "bottom": 1
+                },
+                "color": {
+                        "1": "cyan",
+                        "2": "blue"
+                },
+                "printRemaining": true,
+                "preserveAspectRatio": true,
+                "recache": false,
+                "position": "left",
+                "chafa": {
+                        "fgOnly": true,
+                        "symbols": "block+border+space-wide-inverted"
+                }
+        },
+        "general": {
+                "thread": true,
+                // "escapeBedrock": true,
+                "playerName": "",
+                "dsForceDrm": false,
+                "processingTimeout": 5000,
+                // "preRun": "", // does't work when uncommented
+                "detectVersion": true
+        },
+        "display": {
+                "stat": false, // show individual load time for each moudle: [bool | int]
+                "pipe": false, // disble color
+                "showErrors": false, // print errors to console. if a module generates an error it is ignored
+                "disableLinewrap": true, // lines are cut short if there is not enough spaces
+                "hideCursor": false, // quite literlally hides cursor during execution
+                "separator": " ~ ", // cool separator
+                "color": {
+                        "keys": "cyan", // showcase name of each module
+                        "title": "blue", // title on top of fetch
+                        "output": "", // color of module output (main text)
+                        "separator": "yellow" // color of separator
+                },
+                "brightColor": false, // whether to use bright color variants
+                "key": {
+                        "width": 0, // minimum width of the key (including displayed text)
+                        "type": "icon", // [none | string | icon | both | both-[1..4]]
+                        "paddingLeft": 0 // extra space on the left
+                },
+                "size": {
+                        "binaryPrefix": "iec", // [iec | si | jedec]
+                        "maxPrefix": "YB", // [B | kB | MB | GB | TB | PB | EB | ZB | YB]
+                        "ndigits": 2, // N of decimal places to keep
+                        "spaceBeforeUnit": "default" // [default | always | never]
+                },
+                "temp": {
+                        "unit": "D", // [C | F | K | D = C]
+                        "ndigits": 1, // n of decimal places to keep [0..9]
+                        "color": {
+                                "green": "32", // complicato non ho capito ( non ho letto )
+                                "yellow": "93",
+                                "red": "91"
+                        },
+                        "spaceBeforeUnit": "default" // whether to insert a space before unit
+                },
+                // arrivato qua!!!
+                //
+                //
+                //
+                //
+                //
+                "bar": {
+                        "char": {
+                                "elapsed": "■",
+                                "total": "-"
+                        },
+                        "border": {
+                                "left": "[ ",
+                                "right": " ]",
+                                "leftElapsed": "",
+                                "rightElapsed": ""
+                        },
+                        "color": {
+                                "elapsed": "auto",
+                                "total": "97",
+                                "border": "97"
+                        },
+                        "width": 10
+                },
+                "percent": {
+                        "type": [
+                                "num",
+                                "num-color"
+                        ],
+                        "ndigits": 0,
+                        "color": {
+                                "green": "32",
+                                "yellow": "93",
+                                "red": "91"
+                        },
+                        "spaceBeforeUnit": "default",
+                        "width": 0
+                },
+                "freq": {
+                        "ndigits": 2,
+                        "spaceBeforeUnit": "default"
+                },
+                "duration": {
+                        "abbreviation": true,
+                        "spaceBeforeUnit": "default"
+                },
+                "fraction": {
+                        "ndigits": 2
+                },
+                // "common": {}, // overrides the fields above if inserted before them
+                "noBuffer": false,
+                "constants": []
+        },
+        "modules": [
+                {
+                        "type": "separator",
+                        "string": "",
+                        "outputColor": "yellow",
+                        "times": 1
+                },
+                {
+                        "type": "title",
+                        "key": " ",
+                        "keyIcon": "",
+                        "fqdn": false,
+                        "color": {
+                                "user": "",
+                                "at": "",
+                                "host": ""
+                        }
+                },
+                {
+                        "type": "separator",
+                        "string": "₊˚ ✧ ━━━━⊱⋆⊰━━━━ ✧ ₊˚",
+                        "outputColor": "yellow",
+                        "times": 1
+                },
+                {
+                        "type": "os",
+                        "keyIcon": ""
+                },
+                {
+                        "type": "host",
+                        "keyIcon": "󰌢"
+                },
+                {
+                        "type": "uptime",
+                        "keyIcon": ""
+                },
+                {
+                        "type": "packages",
+                        "keyIcon": "󰏖",
+                        "disabled": [
+                                "apk"
+                        ],
+                        "combined": false
+                },
+                {
+                        "type": "shell",
+                        "keyIcon": ""
+                },
+                {
+                        "type": "wm",
+                        "keyIcon": "",
+                        "detectPlugin": false
+                },
+                // {
+                //   "type": "wmtheme",
+                //   "keyIcon": "󰓸"
+                // },
+                // {
+                //   "type": "theme",
+                //   "keyIcon": "󰉼"
+                // },
+                // {
+                //   "type": "icons",
+                //   "keyIcon": ""
+                // },
+                {
+                        "type": "font",
+                        "keyIcon": ""
+                },
+                // {
+                //   "type": "cursor",
+                //   "keyIcon": "󰆿"
+                // },
+                {
+                        "type": "terminal",
+                        "keyIcon": ""
+                },
+                {
+                        "type": "terminalfont",
+                        "keyIcon": ""
+                },
+                {
+                        "type": "cpu",
+                        "keyIcon": "",
+                        "temp": false,
+                        "showPeCoreCount": false
+                },
+                {
+                        "type": "disk",
+                        "keyIcon": "",
+                        "showRegular": true,
+                        "showExternal": true,
+                        "showHidden": false,
+                        "showSubvolumes": false,
+                        "showReadOnly": true,
+                        "showUnknown": false,
+                        "folders": "",
+                        "hideFolders": "/efi:/boot:/boot/*",
+                        "hideFS": "",
+                        "useAvailable": false,
+                        "percent": {
+                                "green": 50,
+                                "yellow": 80,
+                                "type": 0
+                        }
+                },
+                {
+                        "type": "battery",
+                        "keyIcon": "",
+                        "temp": false,
+                        "percent": {
+                                "green": 50,
+                                "yellow": 20,
+                                "type": 0
+                        }
+                },
+                {
+                        "type": "poweradapter",
+                        "keyIcon": "󰚥"
+                },
+                {
+                        "type": "locale",
+                        "keyIcon": ""
+                },
+                {
+                        "type": "separator",
+                        "string": "₊˚ ✧ ━━━━⊱⋆⊰━━━━ ✧ ₊˚",
+                        "outputColor": "yellow",
+                        "times": 1
+                },
+                {
+                        "type": "colors",
+                        "key": " ",
+                        "keyIcon": "",
+                        "symbol": "block",
+                        "paddingLeft": 0,
+                        "block": {
+                                "width": 3,
+                                "range": [
+                                        0,
+                                        15
+                                ]
+                        }
+                },
+                {
+                        "type": "separator",
+                        "string": "",
+                        "outputColor": "",
+                        "times": 1
+                },
         ]
-      }
-    },
-    {
-      "type": "separator",
-      "string": "",
-      "outputColor": "",
-      "times": 1
-    },
-  ]
 }
