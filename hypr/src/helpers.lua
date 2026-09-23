@@ -11,9 +11,11 @@ H.audio_mute_key = "XF86AudioMute"
 H.audio_mic_mute_key = "XF86AudioMicMute"
 H.brightness_up_key   = "XF86MonBrightnessUp"
 H.brightness_down_key = "XF86MonBrightnessDown"
+H.power_off      = "XF86PowerOff"
 
 -- apps
 H.terminal        = "kitty"
+H.emacs           = "emacsclient -c"
 H.browser         = "zen-browser --blank-window"
 H.browser_recover = "zen-browser"
 H.editor          = "nvim"

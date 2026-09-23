@@ -3,6 +3,7 @@ local P = require("src.peripherals")
 require("src.plugins")
 
 local TERMINAL = H.terminal
+local EMACS    = H.emacs
 local BROWSER  = H.browser
 local BROWSER_RECOVER  = H.browser_recover
 local MENU     = H.menu
@@ -29,6 +30,7 @@ hl.bind("SUPER + P", hl.dsp.window.pin())
 
 -- ESSENTIAL UTILITIES
 hl.bind("SUPER +       + return", hl.dsp.exec_cmd(TERMINAL))
+hl.bind("SUPER + SHIFT + return", hl.dsp.exec_cmd(EMACS))
 hl.bind("SUPER +       + Q", hl.dsp.window.close("activewindow"))
 hl.bind("SUPER + SHIFT + Q", hl.dsp.window.kill("activewindow"))
 hl.bind("SUPER +       + D", hl.dsp.exec_cmd(MENU))
@@ -45,8 +47,9 @@ hl.bind("SUPER + H", smart_focus("l", "r"), { repeating = true })
 hl.bind("SUPER + L", smart_focus("r", "r"), { repeating = true })
 hl.bind("SUPER + J", smart_focus("d", "r+1"), { repeating = true })
 hl.bind("SUPER + K", smart_focus("u", "r-1"), { repeating = true })
-hl.bind("SUPER + CTRL + H", smart_focus("m", "+1")) -- "m" is a custom value, short for monitor
-hl.bind("SUPER + CTRL + L", smart_focus("m", "-1"))
+-- hl.bind("SUPER + CTRL + H", smart_focus("m", "+1")) -- "m" is a custom value, short for monitor
+-- hl.bind("SUPER + CTRL + L", smart_focus("m", "-1"))
+hl.bind("SUPER + CTRL + L", hl.dsp.exec_cmd("hyprlock"))
 
 --- move windows
 -- hl.bind("SUPER + SHIFT + H", hl.dsp.layout("consume_or_expel prev"), { repeating = true })
