@@ -16,6 +16,7 @@ local AUDIO_UP_KEY       = P.audio_up_key
 local AUDIO_DOWN_KEY     = P.audio_down_key
 local AUDIO_MUTE_KEY     = P.audio_mute_key
 local AUDIO_MIC_MUTE_KEY = P.audio_mic_mute_key
+local POWER_KEY      = P.power_key
 
 local MOUSE_LEFT   = P.mouse_left_button
 local MOUSE_RIGHT  = P.mouse_right_button
@@ -26,10 +27,17 @@ local MOUSE_DOWN   = P.mouse_scroll_down
 local smart_focus = H.smart_focus
 local smart_move = H.smart_move
 
-hl.bind("SUPER + P", hl.dsp.window.pin())
+hl.bind("SUPER + P", function()
+        if hl.get_active_workspace().tiled_layout == "master" then
+            return hl.exec_cmd("hyprctl notify 0 5000 'rgb(ffffff)' ' ciao '")
+        end
+    end)
+
 
 -- ESSENTIAL UTILITIES
-hl.bind("SUPER +       + return", hl.dsp.exec_cmd(TERMINAL))
+hl.bind("SUPER +       + RETURN", hl.dsp.exec_cmd(TERMINAL))
+hl.bind("SUPER + SEMICOLON", hl.dsp.exec_cmd('hyprctl notify 0 5000 "rgb(ffffff)" ";"'), { repeating = true })
+hl.bind("SUPER + CTRL  + RETURN", hl.dsp.exec_cmd(TERMINAL))
 hl.bind("SUPER + SHIFT + return", hl.dsp.exec_cmd(EMACS))
 hl.bind("SUPER +       + Q", hl.dsp.window.close("activewindow"))
 hl.bind("SUPER + SHIFT + Q", hl.dsp.window.kill("activewindow"))
@@ -39,7 +47,8 @@ hl.bind("SUPER +       + W", hl.dsp.exec_cmd(BROWSER))
 hl.bind("SUPER + SHIFT + W", hl.dsp.exec_cmd("~/.local/bin/dm-zen"))
 hl.bind("SUPER +       + B", hl.dsp.exec_cmd("pkill waybar || waybar"))
 hl.bind("SUPER + CTRL  + S", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
--- hl.bind("SUPER + CTRL  + L", hl.dsp.exec_cmd("hyprlock"))
+hl.bind("SUPER + TAB + ", function() hl.plugin.overview.toggle() end)
+hl.bind("SUPER + ESCAPE", hl.dsp.exec_cmd("hyprlock"))
 
 -- WORKSPACES & WINDOWS & MOVEMENT
 --- move focus
@@ -49,7 +58,6 @@ hl.bind("SUPER + J", smart_focus("d", "r+1"), { repeating = true })
 hl.bind("SUPER + K", smart_focus("u", "r-1"), { repeating = true })
 -- hl.bind("SUPER + CTRL + H", smart_focus("m", "+1")) -- "m" is a custom value, short for monitor
 -- hl.bind("SUPER + CTRL + L", smart_focus("m", "-1"))
-hl.bind("SUPER + CTRL + L", hl.dsp.exec_cmd("hyprlock"))
 
 --- move windows
 -- hl.bind("SUPER + SHIFT + H", hl.dsp.layout("consume_or_expel prev"), { repeating = true })
@@ -59,8 +67,8 @@ hl.bind("SUPER + CTRL + L", hl.dsp.exec_cmd("hyprlock"))
 
 hl.bind("SUPER + SHIFT + H", smart_move("l", "r"), { repeating = true })
 hl.bind("SUPER + SHIFT + L", smart_move("r", "r"), { repeating = true })
-hl.bind("SUPER + SHIFT + J", smart_move("d", "r+1"))
-hl.bind("SUPER + SHIFT + K", smart_move("u", "r-1"))
+hl.bind("SUPER + SHIFT + J", smart_move("d", "r+1"), { repeating = true })
+hl.bind("SUPER + SHIFT + K", smart_move("u", "r-1"), { repeating = true })
 
 hl.bind("SUPER + SHIFT + CTRL + H", hl.dsp.window.move({ monitor = "+1" }))
 hl.bind("SUPER + SHIFT + CTRL + L", hl.dsp.window.move({ monitor = "-1" }))
@@ -80,8 +88,8 @@ hl.bind("SUPER + SHIFT + " .. MOUSE_UP,   smart_move("d", "r+1"))
 hl.bind("SUPER + SHIFT + " .. MOUSE_DOWN, smart_move("u", "r-1"))
 
 --- specific workspaces
-hl.bind("SUPER +       + S", hl.dsp.workspace.toggle_special())
-hl.bind("SUPER + SHIFT + S", hl.dsp.window.move({ workspace = "special" }))
+hl.bind("SUPER +       + BACKSLASH", hl.dsp.workspace.toggle_special())
+hl.bind("SUPER + SHIFT + BACKSLASH", hl.dsp.window.move({ workspace = "special" }))
 for key = 1, 9 do
         hl.bind("SUPER + "         .. key, hl.dsp.focus({ workspace = key }))
         hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = key }))
@@ -119,6 +127,7 @@ hl.bind(AUDIO_UP_KEY,       H.volume_up(5),   { repeating = true, locked = true 
 hl.bind(AUDIO_DOWN_KEY,     H.volume_down(5), { repeating = true, locked = true })
 hl.bind(AUDIO_MUTE_KEY,     H.audio_mute(),   { locked = true })
 hl.bind(AUDIO_MIC_MUTE_KEY, H.mic_mute(),     { locked = true })
+hl.bind(POWER_KEY, H.go_to_sleep(),     { locked = true })
 
 hl.bind("SUPER + " .. AUDIO_MUTE_KEY, H.player_pause_play())
 hl.bind("SUPER + " .. AUDIO_UP_KEY,   H.player_next())

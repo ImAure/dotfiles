@@ -13,5 +13,6 @@ P.audio_mute_key = "XF86AudioMute"
 P.audio_mic_mute_key = "XF86AudioMicMute"
 P.brightness_up_key   = "XF86MonBrightnessUp"
 P.brightness_down_key = "XF86MonBrightnessDown"
+P.power_key = "XF86PowerOff"
 
 return P
