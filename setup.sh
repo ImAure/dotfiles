@@ -2,22 +2,32 @@
 
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
 DOTFILES="$HOME/dotfiles"
+CONFIG_FOLDERS=("cava" "fastfetch" "fish" "hypr" "kitty" "nvim" "sunsetr" "waybar" "wofi")
 
-REQUIRED_PKGS=(
-    waybar
-    hyprland
-    hyprlock
-    hyprpaper
-    kitty
-    wofi
-    cava
-    fastfetch
-    nvim
+echo "+-------------------------+"
+echo "| Starting dotfiles setup |"
+echo "+-------------------------+"
 
-    ttf-fira-code
-    ttf-firacode-nerd
-    otf-font-awesome
-)
+if [ -f "$DOTFILES/packages.txt" ]; then
+    echo -e "\nUpdating and installing misisng packages"
+
+    PACKAGES=$(grep -vE '^\s*#|^\s*$' "$DOTFILES/packages.txt" | tr '\n' ' ')
+
+# REQUIRED_PKGS=(
+#     waybar
+#     hyprland
+#     hyprlock
+#     hyprpaper
+#     kitty
+#     wofi
+#     cava
+#     fastfetch
+#     nvim
+#
+#     ttf-fira-code
+#     ttf-firacode-nerd
+#     otf-font-awesome
+# )
 
 link() {
     src="$1"

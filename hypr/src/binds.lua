@@ -1,161 +1,133 @@
 local H = require("src.helpers")
-local P = require("src.peripherals")
-require("src.plugins")
 
-local TERMINAL = H.terminal
-local EMACS    = H.emacs
-local BROWSER  = H.browser
-local BROWSER_RECOVER  = H.browser_recover
-local MENU     = H.menu
-local MENU_BIN = H.menu_bin
+local function FREE(_) end
+local function RESERVED(_) end
 
-local BRIGHTNESS_UP_KEY   = P.brightness_up_key
-local BRIGHTNESS_DOWN_KEY = P.brightness_down_key
+local exec = hl.dsp.exec_cmd
+local close = hl.dsp.window.close
+local kill = hl.dsp.window.kill
+local toggle_fullscreen = hl.dsp.window.fullscreen_state
+local function toggle_overview() hl.plugin.overview.toggle() end
 
-local AUDIO_UP_KEY       = P.audio_up_key
-local AUDIO_DOWN_KEY     = P.audio_down_key
-local AUDIO_MUTE_KEY     = P.audio_mute_key
-local AUDIO_MIC_MUTE_KEY = P.audio_mic_mute_key
-local POWER_KEY      = P.power_key
+BINDS = {
+    GLOBAL = {
+        -- common keybinds
+        XF86AudioRaiseVolume  = { action = H.volume_up(5),       options = { repeating = true, locked = true } },
+        XF86AudioLowerVolume  = { action = H.volume_down(5),     options = { repeating = true, locked = true } },
+        XF86AudioMute         = { action = H.audio_mute(),       options = { locked = true } },
+        XF86AudioMicMute      = { action = H.mic_mute(),         options = { locked = true } },
+        XF86MonBrightnessUp   = { action = H.brightness_up(5),   options = { repeating = true, locked = true } },
+        XF86MonBrightnessDown = { action = H.brightness_down(5), options = { repeating = true, locked = true } },
+        XF86PowerOff          = { action = H.go_to_sleep(),      options = { locked = true } },
+        -- common options
 
-local MOUSE_LEFT   = P.mouse_left_button
-local MOUSE_RIGHT  = P.mouse_right_button
-local MOUSE_MIDDLE = P.mouse_middle_button
-local MOUSE_UP     = P.mouse_scroll_up
-local MOUSE_DOWN   = P.mouse_scroll_down
+        SUPER = {
 
-local smart_focus = H.smart_focus
-local smart_move = H.smart_move
+            GRAVE = { action = hl.dsp.workspace.toggle_special() },
 
-hl.bind("SUPER + P", function()
-        if hl.get_active_workspace().tiled_layout == "master" then
-            return hl.exec_cmd("hyprctl notify 0 5000 'rgb(ffffff)' ' ciao '")
-        end
-    end)
+            TAB = { action = hl.dsp.focus({ last = true }) },
+            Q = { action = close("activewindow"), options = { repeating = true }},
+            W = { action = exec(H.browser) },
+            E = { action = exec(H.explorer) },
+            R = FREE, -- { action = resize... }, to resize active window (submap -> vim motions)
+            T = FREE,
+
+            ESCAPE = { action = exec("hyprlock") },
+            A = FREE,
+            S = FREE,
+            D = { action = exec(H.menu) },
+            F = { action = toggle_fullscreen({ internal = 2, client = 0, action = "toggle" }) },
+            G = FREE,
+
+            Z = FREE,
+            X = FREE,
+            C = { action = hl.dsp.window.pseudo({ action = "toggle" })},
+            V = RESERVED("scrolling"),
+            B = { action = H.toggle_state_bar() },
 
 
--- ESSENTIAL UTILITIES
-hl.bind("SUPER +       + RETURN", hl.dsp.exec_cmd(TERMINAL))
-hl.bind("SUPER + SEMICOLON", hl.dsp.exec_cmd('hyprctl notify 0 5000 "rgb(ffffff)" ";"'), { repeating = true })
-hl.bind("SUPER + CTRL  + RETURN", hl.dsp.exec_cmd(TERMINAL))
-hl.bind("SUPER + SHIFT + return", hl.dsp.exec_cmd(EMACS))
-hl.bind("SUPER +       + Q", hl.dsp.window.close("activewindow"))
-hl.bind("SUPER + SHIFT + Q", hl.dsp.window.kill("activewindow"))
-hl.bind("SUPER +       + D", hl.dsp.exec_cmd(MENU))
-hl.bind("SUPER + SHIFT + D", hl.dsp.exec_cmd(MENU_BIN))
-hl.bind("SUPER +       + W", hl.dsp.exec_cmd(BROWSER))
-hl.bind("SUPER + SHIFT + W", hl.dsp.exec_cmd("~/.local/bin/dm-zen"))
-hl.bind("SUPER +       + B", hl.dsp.exec_cmd("pkill waybar || waybar"))
-hl.bind("SUPER + CTRL  + S", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
-hl.bind("SUPER + TAB + ", function() hl.plugin.overview.toggle() end)
-hl.bind("SUPER + ESCAPE", hl.dsp.exec_cmd("hyprlock"))
+            Y = FREE,
+            U = FREE,
+            I = FREE,
+            O = { action = toggle_overview },
+            P = FREE, -- pin?
+            BRACKETLEFT = { action = hl.dsp.focus({ monitor = "-1" })},
+            BRACKETRIGHT = { action = hl.dsp.focus({ monitor = "+1" })},
+            BACKSLASH = { action = hl.dsp.workspace.toggle_special() },
 
--- WORKSPACES & WINDOWS & MOVEMENT
---- move focus
-hl.bind("SUPER + H", smart_focus("l", "r"), { repeating = true })
-hl.bind("SUPER + L", smart_focus("r", "r"), { repeating = true })
-hl.bind("SUPER + J", smart_focus("d", "r+1"), { repeating = true })
-hl.bind("SUPER + K", smart_focus("u", "r-1"), { repeating = true })
--- hl.bind("SUPER + CTRL + H", smart_focus("m", "+1")) -- "m" is a custom value, short for monitor
--- hl.bind("SUPER + CTRL + L", smart_focus("m", "-1"))
+            H = { action = H.smart_focus({ direction = "l" }),                  options = { repeating = true } },
+            J = { action = H.smart_focus({ direction = "d", relative = true }), options = { repeating = true } },
+            K = { action = H.smart_focus({ direction = "u", relative = true }), options = { repeating = true } },
+            L = { action = H.smart_focus({ direction = "r" }),                  options = { repeating = true } },
+            SEMICOLON = FREE,
+            APOSTROPHE = FREE,
+            RETURN = { action = hl.dsp.exec_cmd(H.terminal), options = { repeating = true } },
 
---- move windows
--- hl.bind("SUPER + SHIFT + H", hl.dsp.layout("consume_or_expel prev"), { repeating = true })
--- hl.bind("SUPER + SHIFT + L", hl.dsp.layout("consume_or_expel next"), { repeating = true })
--- hl.bind("SUPER + SHIFT + J", hl.dsp.window.move({ workspace = "r+1" }))
--- hl.bind("SUPER + SHIFT + K", hl.dsp.window.move({ workspace = "r-1" }))
+            SHIFT = {
+                RETURN    = { action = exec(H.emacs) },
+                BACKSLASH = { action = hl.dsp.window.move({ workspace = "special" }) },
+                GRAVE     = { action = hl.dsp.window.move({ workspace = "special" }) },
+                Q         = { action = kill("activewindow") },
+                W         = FREE,
+                -- E         = { action = toggle_overview() },
+                R         = FREE,
+                A         = FREE,
+                S         = { action = exec(H.screenshot) },
+                D         = { action = exec(H.menu_bin) },
+                F         = { action = hl.dsp.window.float({ action = "toggle" })},
 
-hl.bind("SUPER + SHIFT + H", smart_move("l", "r"), { repeating = true })
-hl.bind("SUPER + SHIFT + L", smart_move("r", "r"), { repeating = true })
-hl.bind("SUPER + SHIFT + J", smart_move("d", "r+1"), { repeating = true })
-hl.bind("SUPER + SHIFT + K", smart_move("u", "r-1"), { repeating = true })
+                H = { action = H.smart_move({ direction = "l" }),                  options = { repeating = true } },
+                J = { action = H.smart_move({ direction = "d", relative = true }), options = { repeating = true } },
+                K = { action = H.smart_move({ direction = "u", relative = true }), options = { repeating = true } },
+                L = { action = H.smart_move({ direction = "r" }),                  options = { repeating = true } },
+                BRACKETLEFT = { action = hl.dsp.window.move({ monitor = "-1" })},
+                BRACKETRIGHT = { action = hl.dsp.window.move({ monitor = "+1" })},
+            }
+        }
+    },
+    SCROLLING = {
+        SUPER = {
+            V = { action = hl.dsp.layout("colresize +conf") },
 
-hl.bind("SUPER + SHIFT + CTRL + H", hl.dsp.window.move({ monitor = "+1" }))
-hl.bind("SUPER + SHIFT + CTRL + L", hl.dsp.window.move({ monitor = "-1" }))
+            SHIFT = {
+                V = { action = hl.dsp.layout("fit visible") }
+            }
+        }
+    },
 
---- change monitor
 
---- move columns
-hl.bind("SUPER + ALT   + H", hl.dsp.layout("swapcol l"))
-hl.bind("SUPER + ALT   + L", hl.dsp.layout("swapcol r"))
--- add here something to move the whole column to another workspace u/d
--- add here something to move the whole column to another workspace u/d
+    MASTER = {
+        SUPER = {
+            -- Bind utilissimi nativi per il layout Master in Hyprland
+            SPACE = { action = hl.dsp.layout("orientationnext") }, -- Gira il master in orizzontale/verticale
+            I     = { action = hl.dsp.layout("addmaster") },       -- Aggiunge la finestra corrente allo stack master
+            O     = { action = hl.dsp.layout("removemaster") },    -- Rimuove dal master
 
---- MOUSE
-hl.bind("SUPER + " .. MOUSE_UP,   smart_focus("d", "r+1"))
-hl.bind("SUPER + " .. MOUSE_DOWN, smart_focus("u", "r-1"))
-hl.bind("SUPER + SHIFT + " .. MOUSE_UP,   smart_move("d", "r+1"))
-hl.bind("SUPER + SHIFT + " .. MOUSE_DOWN, smart_move("u", "r-1"))
+            SHIFT = {
+                RETURN = { action = hl.dsp.layout("swapwithmaster") }, -- Prende la finestra corrente e la sbatte come Master
+                M      = { action = hl.dsp.layout("focusmaster") },    -- Sposta il focus immediatamente sulla finestra Master
+            }
+        }
+    }
+}
 
---- specific workspaces
-hl.bind("SUPER +       + BACKSLASH", hl.dsp.workspace.toggle_special())
-hl.bind("SUPER + SHIFT + BACKSLASH", hl.dsp.window.move({ workspace = "special" }))
-for key = 1, 9 do
-        hl.bind("SUPER + "         .. key, hl.dsp.focus({ workspace = key }))
-        hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = key }))
+for i = 1, 9 do
+    local key = tostring(i)
+    BINDS.GLOBAL.SUPER[key] = { action = hl.dsp.focus({ workspace = i }) }
+    if not BINDS.GLOBAL.SUPER.SHIFT then BINDS.GLOBAL.SUPER.SHIFT = {} end
+    BINDS.GLOBAL.SUPER.SHIFT[key] = { action = hl.dsp.window.move({ workspace = i }) }
 end
--- hl.bind("SUPER +       + 0", hl.dsp.focus({ workspace = more_workspaces() })                 --extra workspaces, when you press 0 ask for a 2-digit number and go to that ws
--- hl.bind("SUPER + SHIFT + 0", hl.dsp.window.move({ workspace = more_workspaces() })
-
---- column size
-hl.bind("SUPER +       + V", hl.dsp.layout("colresize +conf"))
-hl.bind("SUPER + SHIFT + V", hl.dsp.layout("fit visible"))
-hl.bind("SUPER +       + COMMA",  hl.dsp.layout("colresize -0.02"), { repeating = true })
-hl.bind("SUPER +       + PERIOD", hl.dsp.layout("colresize +0.02"), { repeating = true })
-
---- fullscreen & floating
-hl.bind("SUPER +       + F", hl.dsp.window.fullscreen_state({ internal = 2, client = 0, action = "toggle" }))
-hl.bind("SUPER + SHIFT + F", hl.dsp.window.float( { action = "toggle" }))
-hl.bind("SUPER +       + " .. MOUSE_LEFT, hl.dsp.window.resize())
-hl.bind("SUPER + SHIFT + " .. MOUSE_LEFT, hl.dsp.window.drag())
-
-
--- -- hl.bind("SUPER + T", hl.plugin.Hyprdrive())
--- hl.bind("SUPER + I", function()
---         hl.exec_cmd("Hyprdrive:toggle")
--- end)
-
--- OTHER UTILITIES
-hl.bind("SUPER + C", hl.dsp.exec_cmd("kitty peaclock"))
-hl.bind("SUPER + N", hl.dsp.exec_raw("~/.local/bin/dm-mako"))
-hl.bind("SUPER + M", hl.dsp.exec_cmd("~/.local/bin/dm-sunsetr"))
-
-hl.bind(BRIGHTNESS_UP_KEY,   H.brightness_up(5),   { repeating = true, locked = true })
-hl.bind(BRIGHTNESS_DOWN_KEY, H.brightness_down(5), { repeating = true, locked = true })
-
-hl.bind(AUDIO_UP_KEY,       H.volume_up(5),   { repeating = true, locked = true })
-hl.bind(AUDIO_DOWN_KEY,     H.volume_down(5), { repeating = true, locked = true })
-hl.bind(AUDIO_MUTE_KEY,     H.audio_mute(),   { locked = true })
-hl.bind(AUDIO_MIC_MUTE_KEY, H.mic_mute(),     { locked = true })
-hl.bind(POWER_KEY, H.go_to_sleep(),     { locked = true })
-
-hl.bind("SUPER + " .. AUDIO_MUTE_KEY, H.player_pause_play())
-hl.bind("SUPER + " .. AUDIO_UP_KEY,   H.player_next())
-hl.bind("SUPER + " .. AUDIO_DOWN_KEY, H.player_prev())
-
-
-
--- hl.bind("SUPER + G", function()
---         local layout = hl.get_active_workspace().tiled_layout
---         hl.notification.create({ text = layout, duration = 1000 })
---         if layout == "scrolling" then
---                 hl.notification.create({ text = "minchia", duration = 1000 })
---         else
---                 hl.notification.create({ text = "no" .. hl.layout, duration = 1000 })
---         end
--- end)
-
--- GESTURES
+H.and_in_the_darkness_bind_them(BINDS)
 
 hl.config({
-        gestures = {
-                -- see https://wiki.hypr.land/Configuring/Gestures
-                workspace_swipe_distance = 300, -- 300
-                workspace_swipe_invert = true,  -- true
-        },
+    gestures = {
+        -- see https://wiki.hypr.land/Configuring/Gestures
+        workspace_swipe_distance = 300, -- 300
+        workspace_swipe_invert = true,  -- true
+    },
 })
 
-hl.gesture({ fingers = 3, direction = "up",    action = smart_focus("d", "r+1") })
-hl.gesture({ fingers = 3, direction = "down",  action = smart_focus("u", "r-1") })
-hl.gesture({ fingers = 3, direction = "right", action = function() hl.dispatch(hl.dsp.layout("focus l")) end })
-hl.gesture({ fingers = 3, direction = "left",  action = function() hl.dispatch(hl.dsp.layout("focus r")) end })
+hl.gesture({ fingers = 3, direction = "up",    action = H.smart_focus({ direction = "d", relative = true }) })
+hl.gesture({ fingers = 3, direction = "down",  action = H.smart_focus({ direction = "u", relative = true }) })
+hl.gesture({ fingers = 3, direction = "right", action = H.smart_focus({ direction = "l", relative = true }) })
+hl.gesture({ fingers = 3, direction = "left",  action = H.smart_focus({ direction = "r", relative = true }) })

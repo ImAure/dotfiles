@@ -21,6 +21,7 @@ pwvucontrol
 bluez
 bluez-utils
 bluetui
+
 mako
 
 networkmanager-openvpn

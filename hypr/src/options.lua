@@ -10,7 +10,7 @@ hl.config({
         gaps_in         =   3,
         gaps_out        =  12,  -- d: 20
         float_gaps      =  10,
-        gaps_workspaces = -12,
+        gaps_workspaces =   0,
 
         ["col.active_border"]         = { colors = { accent, accent_alt }, angle = 35 },
         ["col.inactive_border"]       = "#181825" .. "00",
@@ -36,7 +36,6 @@ hl.config({
             border_overlap = true,
             respect_gaps   = true,
         },
-
     },
 
     scrolling = {
@@ -88,9 +87,8 @@ hl.config({
         blur = { -- TO BE REFINED
             -- backgroun blur
             enabled = true, -- true
-
             size   = 6, -- 8
-            -- variant = "frost",
+            -- variant = "kawase",
             passes = 3, -- 1
 
             ignore_opacity    = true,  -- true
@@ -121,7 +119,7 @@ hl.config({
             -- ignore_window = true -- true
 
             color          = "#f2cdcd00", -- rgba(1a1a1aee)
-            color_inactive = "#11111b00",     -- unset
+            color_inactive = "#11111b00", -- unset
 
             offset = { 0, 0 },
             scale  = 1.0,
@@ -137,7 +135,7 @@ hl.config({
 
         motion_blur = {
             enabled = false,
-            samples = 0
+            samples = 1
         }
     },
 
@@ -147,20 +145,27 @@ hl.config({
     },
 
     misc = {
+        -- animate_manual_resizes = true,
+        -- animate_mouse_windowdragging = true,
         disable_hyprland_logo = true,
         disable_splash_rendering = false,
         disable_scale_notification = false,
+        focus_on_activate = true,
         -- col.splash = 0x00000000,
         font_family = "Sans",
         splash_font_family = "",
         force_default_wallpaper = false,
         vrr = 1,
         enable_swallow = true,
-        swallow_regex = "^(kitty)$"
+        swallow_regex = "^(kitty)$",
+        session_lock_blur = true,
+        session_lock_xray = true
     },
 
     binds = {
-        hide_special_on_workspace_change = true
+        allow_pin_fullscreen = true,
+        hide_special_on_workspace_change = true,
+        movefocus_cycles_fullscreen = true
     },
 
     xwayland = {

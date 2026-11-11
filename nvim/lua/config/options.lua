@@ -15,6 +15,16 @@ vim.filetype.add {
         def = 'tex',
     },
     filename = {
-        ['*.def'] = 'tex',
+        ['%.def'] = 'tex',
+    },
+}
+
+
+vim.filetype.add {
+    extension = {
+        yuck = 'lisp',
+    },
+    filename = {
+        ['%.yuck'] = 'lisp',
     },
 }
