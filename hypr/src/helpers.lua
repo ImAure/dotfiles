@@ -189,6 +189,12 @@ function H.and_in_the_darkness_bind_them(tree)
     end
 end
 
+function H.set_environment_variables(tree)
+    for variable, value in pairs(tree) do
+        hl.env(variable, value)
+    end
+end
+
 function H.init_split_workspaces(target_monitor)
     local monitors = target_monitor and { target_monitor } or (hl.get_monitors and hl.get_monitors() or {})
     if #monitors == 0 then return end

@@ -4,8 +4,9 @@ H = require("src.helpers")
 hl.on("hyprland.start", function()
     for _, command in ipairs({
         "sudo systemctl start --now tlp bluetooth keyd",
-        -- "hyprpaper",
-        "awww-daemon -l background",
+        "hyprpaper",
+        -- "awww-daemon -l background",
+        "WALPIPER_PORTAL=hyprland wallpiperd",
         "hyprpm reload -nn && hyprctl dismissnotify",
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP",
         "mako",
@@ -14,6 +15,7 @@ hl.on("hyprland.start", function()
         "sunsetr",
         "hypridle",
         "swayosd-server",
+        "emacs --daemon"
     }) do
         hl.exec_cmd(command)
     end

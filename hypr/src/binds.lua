@@ -23,6 +23,14 @@ BINDS = {
 
         SUPER = {
 
+            XF86AudioRaiseVolume  = { action = hl.dsp.exec_cmd("playerctl next"),       options = { repeating = true, locked = true } },
+            XF86AudioLowerVolume  = { action = hl.dsp.exec_cmd("playerctl previous"),   options = { repeating = true, locked = true } },
+            XF86AudioMute         = { action = hl.dsp.exec_cmd("playerctl play-pause"), options = { locked = true } },
+            XF86AudioMicMute      = { action = H.mic_mute(),         options = { locked = true } },
+            XF86MonBrightnessUp   = { action = H.brightness_up(5),   options = { repeating = true, locked = true } },
+            XF86MonBrightnessDown = { action = H.brightness_down(5), options = { repeating = true, locked = true } },
+            XF86PowerOff          = { action = H.go_to_sleep(),      options = { locked = true } },
+
             GRAVE = { action = hl.dsp.workspace.toggle_special() },
 
             TAB = { action = hl.dsp.focus({ last = true }) },
@@ -63,6 +71,12 @@ BINDS = {
             APOSTROPHE = FREE,
             RETURN = { action = hl.dsp.exec_cmd(H.terminal), options = { repeating = true } },
 
+            N = { action = hl.dsp.exec_cmd("~/.local/bin/dm-mako") },
+            M = FREE,
+            COMMA = FREE,
+            PERIOLD = FREE,
+
+
             SHIFT = {
                 RETURN    = { action = exec(H.emacs) },
                 BACKSLASH = { action = hl.dsp.window.move({ workspace = "special" }) },
@@ -82,6 +96,8 @@ BINDS = {
                 L = { action = H.smart_move({ direction = "r" }),                  options = { repeating = true } },
                 BRACKETLEFT = { action = hl.dsp.window.move({ monitor = "-1" })},
                 BRACKETRIGHT = { action = hl.dsp.window.move({ monitor = "+1" })},
+
+                N = { action = hl.dsp.exec_cmd("~/.local/bin/dm-sunsetr") },
             }
         }
     },
