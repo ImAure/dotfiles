@@ -22,6 +22,9 @@ BINDS = {
         -- common options
 
         SUPER = {
+            mouse_up   = { action = H.smart_focus({ direction = "u", relative = true }) },
+            mouse_down = { action = H.smart_focus({ direction = "d", relative = true }) },
+            ["mouse:272"] = { action = hl.dsp.window.resize() },
 
             XF86AudioRaiseVolume  = { action = hl.dsp.exec_cmd("playerctl next"),       options = { repeating = true, locked = true } },
             XF86AudioLowerVolume  = { action = hl.dsp.exec_cmd("playerctl previous"),   options = { repeating = true, locked = true } },
@@ -78,6 +81,10 @@ BINDS = {
 
 
             SHIFT = {
+                mouse_up   = { action = H.smart_move({ direction = "u", relative = true }) },
+                mouse_down = { action = H.smart_move({ direction = "d", relative = true }) },
+                ["mouse:272"] = { action = hl.dsp.window.drag() },
+
                 RETURN    = { action = exec(H.emacs) },
                 BACKSLASH = { action = hl.dsp.window.move({ workspace = "special" }) },
                 GRAVE     = { action = hl.dsp.window.move({ workspace = "special" }) },
