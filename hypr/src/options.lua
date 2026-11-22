@@ -165,7 +165,8 @@ hl.config({
     binds = {
         allow_pin_fullscreen = true,
         hide_special_on_workspace_change = true,
-        movefocus_cycles_fullscreen = true
+        movefocus_cycles_fullscreen = true,
+        scroll_event_delay = 50
     },
 
     xwayland = {
