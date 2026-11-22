@@ -24,4 +24,4 @@ hl.on("hyprland.start", function()
 end)
 
 hl.on("monitor.added", function(monitor) H.init_split_workspaces(monitor) end)
-hl.on("monitor.removed", function() H.merge_orphaned_window() end)
+hl.on("monitor.removed", function() H.merge_orphaned_windows() end)
