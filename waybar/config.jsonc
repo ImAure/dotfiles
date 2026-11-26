@@ -243,7 +243,7 @@
                 // "format-icons": ["", "", "", "", ""],
                 "format-icons": {
                         "default": ["󰂃", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-                        "charging": ["󰂃", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋 "]
+                        "charging": ["󰂃", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋 ", ""]
                 },
 
 
@@ -264,7 +264,7 @@
                 "lower_cutoff_freq": 90,
                 "higher_cutoff_freq": 10000,
                 "sleep_timer": 1,
-                "hide_on_silence": false,
+                "hide_on_silence": true,
                 "format_silent": "<b> </b>",
                 "method": "pipewire",
                 "source": "auto",

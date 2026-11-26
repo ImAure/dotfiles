@@ -1,4 +1,5 @@
-local theme = require("themes.catppuccin.mocha")
+local xdg_config = os.getenv("XDG_CONFIG_HOME") or (os.getenv("HOME") .. "/.config")
+local theme = dofile(xdg_config .. "/themes/catppuccin/mocha.lua")
 local accent = theme.rosewater.hex
 local accent_alt = theme.maroon.hex
 local red = theme.red.hex

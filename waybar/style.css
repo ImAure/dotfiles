@@ -1,4 +1,4 @@
-@import "themes/catppuccin/mocha.css";
+@import "../themes/catppuccin/mocha.css";
 
 * {
     border: none;
@@ -22,7 +22,7 @@ window#waybar {
     color: @accent;
 }
 
-#custom-separator + #cava.hidden {
+#cava.hidden + #custom-separator {
     opacity: 0;
     margin: 0;
     padding: 0;
